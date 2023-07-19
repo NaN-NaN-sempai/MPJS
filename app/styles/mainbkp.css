@@ -1,0 +1,220 @@
+:root {
+    --mainBlue: #73d7ff;
+    --darkerBlue: #739fff;
+    --error: red;
+    --grey: #e0e0e0;
+    --mouseBarWidth: 5px;
+    --backgorund: white;
+}
+
+* {
+    margin: 0;
+    user-select: none;
+    outline: none;
+    font-family: sans-serif;
+}
+.containerContainer {
+    height: 100vh;
+    width: 100%;
+    overflow: hidden;
+    position: absolute;
+    background: linear-gradient(to right, transparent 49.8%, black 49.8%, black 50.2%, transparent 50.2%),
+                linear-gradient(to top, transparent 49.8%, black 49.8%, black 50.2%, transparent 50.2%);
+}
+.container {
+    height: 100vh;
+    width: 100vh;
+    position: absolute;
+    top: 50%;
+    right: 50%;
+    transform: translate(50%, -50%);
+    overflow-x: visible; 
+}
+.ponto {
+    background: var(--mainBlue);
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    outline: 3px solid var(--darkerBlue);
+    transform: translate(-50%, 50%);
+    position: absolute;
+    z-index: 1;
+}
+.ponto::after {
+    content: attr(data-pos); 
+    position: relative;
+    left: 40px;
+    top: 5px;
+    background: var(--mainBlue);
+    white-space: nowrap;
+    overflow: hidden;
+    padding: 10px;
+    border-radius: 50px;
+    color: var(--backgorund);
+    outline: 4px solid var(--darkerBlue);
+    display: none; 
+}
+.ponto:hover::after {
+    display: inline;
+}
+.barra {
+    background: var(--darkerBlue);
+    border: none;
+    transform: translate(-50%, 50%);
+    position: absolute;
+}
+.erro {
+    color: var(--error);
+    border-color: var(--error);
+}
+.controladores {
+    position: absolute;
+    left: 20px;
+    top: 20px;
+    z-index: 2;
+    background: var(--backgorund);
+    border: solid 1px black;
+    width: fit-content;
+    height: fit-content;
+    padding: 10px;
+    border-radius: 20px;
+    opacity: .8;
+}
+.controladores *:not(.ignore):not(.ignore *) {
+    display: none;
+}
+.controladores:hover {
+    opacity: 1;
+}
+.controladores:hover > *:not(.ignore):not(.ignore *) {
+    display: inline;
+}
+
+.controladores .hidden {
+    display: none;
+}
+
+.controladores #equacao {
+    border-radius: 10px;
+}
+
+.controladores .monacoContainer {          
+    width: 200px;
+    height: 40px;
+    outline: solid black 1px;
+    resize: both;
+    border-radius: 10px 10px 5px 10px;
+    overflow: hidden;
+}
+
+input[type="number"]{ 
+    border-radius: 10px;
+    border: 1px solid black;
+    width: 50px;
+}
+
+
+input[type="range"]{
+    appearance: none;
+    position: relative;  
+    overflow: hidden; 
+    cursor: pointer;
+} 
+
+input[type="range"]::-webkit-slider-runnable-track{
+    height: 10px;  
+    background-color: var(--grey);
+    border-radius: 0 20px 20px 0; 
+    clip-path: polygon(0px -100vh, 100vw -100vh, 100vw 100vh, 0px 100vh);
+    z-index: 1;
+}
+
+input[type="range"]::-webkit-slider-thumb{
+    appearance: none;
+    --size: 10px;
+    width: var(--size);
+    height: var(--size);
+    margin-top: -5px;  
+    border-radius: 0 20px 20px 0;
+    margin-top: 0;
+    background-color: var(--mainBlue); 
+    box-shadow: calc(-100vw - var(--size)) 0 0 100vw var(--mainBlue);
+    clip-path: polygon(1px 0, 100% 0, 100% 100%, 1px 100%, 1px calc(50% + 14px), -100vw calc(50% + 14px), -100vw calc(50% - 14px), 0 calc(50% - 14px));
+    z-index: 1;
+}
+
+
+
+
+.mouseGridFollower {
+    height: 100vh;
+    width: 100%;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+}
+
+.mouseGridFollower .xbar {
+    height: 100vh;
+    width: var(--mouseBarWidth);
+    position: absolute;
+    left: 50%;
+    background: var(--grey); 
+}
+
+.mouseGridFollower .ybar {
+    width: 100vw;
+    height: var(--mouseBarWidth);
+    position: absolute;
+    top: 50%;
+    background: var(--grey); 
+}
+
+.mouseGridFollower .value { 
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    background: var(--grey);
+    transform: translate(-110%, -120%);
+    color: var(--backgorund);
+    text-align: center;
+    --paddingAmount: 10px;
+    padding-left: var(--paddingAmount);
+    padding-right: var(--paddingAmount);
+    border-radius: 10px; 
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.navegacao {
+    padding: 5px;
+    border-radius: 20px;
+    background: white;
+    outline: 2px solid var(--darkerBlue);
+    position: absolute;
+    right: 10px;
+    bottom: 10px; 
+    color: var(--darkerBlue);
+    box-shadow: 0 10px 10px rgb(121, 121, 121);
+}
+.navegacao a:visited {
+    color: var(--darkerBlue);
+}
+.navegacao a {
+    text-decoration: none;
+}
+
+.shareButton {
+    color: black;
+    background: white;
+    border: solid 1px black;
+    border-radius: 20px;
+}
+.shareButton:hover {
+    color: black;
+    background: var(--mainBlue);
+}
+.shareButton:active {
+    color: var(--mainBlue);
+    background: black;
+}

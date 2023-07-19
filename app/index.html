@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <link rel="icon" type="image/x-icon" href="../icon.png">
+    <title>PdeJS | Plotador Matemático</title>
+    <!-- link rel="stylesheet" href="./styles/compiled.css"> -->
+
+    <!-- monaco Css -->
+    <link rel="stylesheet" data-name="vs/editor/editor.main" href="./scripts/monaco_editor/min/vs/editor/editor.main.css">
+
+</head>
+<body>
+    <div class="containerContainer">
+        <div class="container"></div>
+    </div>
+
+    <div class="code">
+        <div class="ignore monacoContainer" id="monacoContainer"></div>
+
+        <div class="resizeThumb">
+            <div class="thumbGraphic"></div>
+        </div>
+
+
+        <div class="wiphide">
+            <label>Equação <span id="equacaoSpan"></span></label><br>
+            <p class="erroDisplay ignore"></p><br>
+
+            
+                
+            <h4>Plotador de Funções (PdeF)</h4>
+            <br><br>
+
+            <button class="shareButton">Compartilhar Função</button>
+            <br><br>
+
+            <input type="range" id="tamanho" value="25" step="1" min="2" max="50"> <label>Tamanho dos pontos</label> <br>
+            <input type="range" id="resolucao" value="1" step="1" min="1" max="20"> <label>Resolução</label> <br>
+            <input type="range" id="zoom" value="1" step=".1" min=".1" max="10"> <label>Zoom geral</label> <br>
+            <input type="range" id="xZoom" value="1" step=".1" min=".1" max="10"> <label>Zoom em X</label> <br>
+            <input type="range" id="yZoom" value="1" step=".1" min=".1" max="10"> <label>Zoom em Y</label> <br> <br>
+
+            <input type="number" id="intervaloI" value="-50"> <span>|</span> <input type="number" id="intervaloF" value="50"> <label>Intervalo</label> <br> <br>
+
+            <input type="number" id="deicmais" value="2" min="0"> <label>Casas decimais</label>
+        
+        </div>
+    </div>
+
+    <div class="mouseGridFollower">
+        <div class="xbar"></div>
+        <div class="ybar"></div>
+        <div class="value">
+            Esperando interação...
+        </div> 
+    </div>
+
+    <div class="navegacao">
+        <a href="../">Início</a> | <a href="../doc">Documentação</a>
+    </div>
+</body>
+
+
+<!-- resize code -->
+<script src="./scripts/resizeCode.js"></script>
+
+
+
+<!-- sass compiler -->
+<script src="./scripts/sass/sass.js"></script>
+<script>
+    var compiledCssText = "";
+    const compiledCss = () => open("", "_blank").document.write(compiledCssText);
+    if(true){
+        fetch("./styles/main.scss")
+        .then(r=>r.text())
+        .then(scss => {
+            var sass = new Sass();
+            sass.compile(scss, function(result) {
+                var style = document.createElement("style");
+                    style.innerHTML = result.text;
+                document.head.append(style);
+                monacoEditor.layout();
+
+                compiledCssText = result.text;
+            });
+        })
+    }
+    
+</script>
+<!-- sass building -->
+
+
+<!-- monaco editor -->
+<script src="./scripts/monaco_editor/min/vs/loader.js"></script>
+<script src="./scripts/monacoLoader.js"></script>
+<!-- monaco editor -->
+
+
+<script src="./scripts/main.js"></script>
+<script src="./scripts/mouseMove.js"></script>
+
+
+<!-- share -->
+<script src="./scripts/share.js"></script>
+
+<!-- remover iframe content -->
+<!-- <script>
+    function inIframe () {
+        try {
+            return window.self !== window.top;
+        } catch (e) {
+            return true;
+        }
+    }
+
+    if(inIframe()){
+        document.querySelector(".navegacao").remove();
+    }
+</script> -->
+</html>
