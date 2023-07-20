@@ -6,10 +6,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <link rel="icon" type="image/x-icon" href="../icon.png">
     <title>MPJS | Plotador Matemático</title>
-    <!-- link rel="stylesheet" href="./styles/compiled.css"> -->
+    <!-- <link rel="stylesheet" href="./styles/compiled.css"> -->
+
+    <!-- sass compiler -->
+    <script src="./scripts/sass/sass.js"></script>
+    <script>
+        var compiledCssText = "";
+        const compiledCss = () => open("", "_blank").document.write(compiledCssText);
+        if(true){
+            fetch("./styles/main.scss")
+            .then(r=>r.text())
+            .then(scss => {
+                var sass = new Sass();
+                sass.compile(scss, function(result) {
+                    var style = document.createElement("style");
+                        style.innerHTML = result.text;
+                    document.head.append(style);
+
+                    compiledCssText = result.text;
+                });
+            })
+        }
+        
+    </script>
+    <!-- sass building -->
 
     <!-- monaco Css -->
-    <link rel="stylesheet" data-name="vs/editor/editor.main" href="./scripts/monaco_editor/min/vs/editor/editor.main.css">
+    <link rel="stylesheet" data-name="vs/editor/editor.main" href="./scripts/monacoEditor/min/vs/editor/editor.main.css">
 
 </head>
 <body>
@@ -67,36 +90,35 @@
 <!-- resize code -->
 <script src="./scripts/resizeCode.js"></script>
 
-
-
-<!-- sass compiler -->
-<script src="./scripts/sass/sass.js"></script>
+<!-- nerdamer equation solver -->
+<script src="./scripts/nerdamer/equations.js"></script>
 <script>
-    var compiledCssText = "";
-    const compiledCss = () => open("", "_blank").document.write(compiledCssText);
-    if(true){
-        fetch("./styles/main.scss")
-        .then(r=>r.text())
-        .then(scss => {
-            var sass = new Sass();
-            sass.compile(scss, function(result) {
-                var style = document.createElement("style");
-                    style.innerHTML = result.text;
-                document.head.append(style);
-                monacoEditor.layout();
+    var equacao = (...test) => {
+        var solved, retObj = {};
 
-                compiledCssText = result.text;
+        try {
+            solved = nerdamer.solveEquations(test);
+        } catch (error) {
+            console.error(error);
+            return {};
+        }
+
+        if(Array.isArray(solved[0])){
+            solved.forEach(e => {
+                retObj[e[0]] = e[1].toString();
             });
-        })
-    }
-    
-</script>
-<!-- sass building -->
 
+        } else {
+            retObj[solved[0]] = solved[1].toString();
+        }
+
+        return retObj;
+    }
+</script>
 
 <!-- monaco editor -->
-<script src="./scripts/monaco_editor/min/vs/loader.js"></script>
-<script src="./scripts/monacoLoader.js"></script>
+<script src="./scripts/monacoEditor/min/vs/loader.js"></script>
+<script src="./scripts/monacoEditorBuilder.js"></script>
 <!-- monaco editor -->
 
 

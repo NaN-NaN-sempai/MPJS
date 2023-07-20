@@ -81,6 +81,7 @@ var reiniciar = () => {
 var funcao_padrao = x => Math.pow(x, 3);
 
 document.getElementById('monacoContainer').addEventListener("monacoEditorInput", function(event) {
+    return;
     var {monacoEditor} = event.detail;
     
     var equacao = monacoEditor.getValue();
