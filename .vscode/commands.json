@@ -1,0 +1,18 @@
+{
+  "commands": [
+    {
+      "command": "commands.refresh",
+      "text": "$(sync)",
+      "tooltip": "Refresh commands",
+      "color": "#FFCC00"
+    },
+    {
+      "command": "ngrok-for-vscode.start",
+      "text": "ngrok",
+      "tooltip": "Start the ngrok server",
+      "alignment": "right",  
+      "color": "#FFCC00",
+      "priority": 3
+    }
+  ]
+}

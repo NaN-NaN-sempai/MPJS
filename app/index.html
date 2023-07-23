@@ -24,6 +24,7 @@
                     document.head.append(style);
 
                     compiledCssText = result.text;
+                    monaco.editor.remeasureFonts();
                 });
             })
         }
@@ -100,17 +101,31 @@
             solved = nerdamer.solveEquations(test);
         } catch (error) {
             console.error(error);
-            return {};
+            return {
+                error
+            };
         }
 
-        if(Array.isArray(solved[0])){
-            solved.forEach(e => {
-                retObj[e[0]] = e[1].toString();
-            });
+        var setupValue = e => {
+            var evaluatedValue;
 
-        } else {
-            retObj[solved[0]] = solved[1].toString();
+            try {
+                evaluatedValue = eval(e[1].toString())
+            } catch (error) {
+                evaluatedValue = e[1].toString()
+                retObj.error = error;
+            }
+
+            retObj.noEval = {};
+
+            retObj[e[0]] = evaluatedValue;
+            retObj.noEval[e[0]] = e[1].toString();
         }
+
+        if(Array.isArray(solved[0]))
+            solved.forEach(setupValue);
+        else 
+            setupValue(solved);
 
         return retObj;
     }

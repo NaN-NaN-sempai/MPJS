@@ -177,6 +177,17 @@ body {
 }
 
 
+.colorInputHighlight {
+	color: black !important;
+    background: white !important;
+	border-radius: 5px;
+	font-weight: bold;
+    padding-right: 5px;
+    padding-left: 5px;
+    box-shadow: 0 0 3px white;
+}
+
+
 .wiphide {
     display: none;
 }
