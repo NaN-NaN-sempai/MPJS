@@ -380,10 +380,8 @@ require(["vs/editor/editor.main"], () => {
     });
 
     monaco.languages.registerHoverProvider('javascript', {
-        provideHover: function(model, position) { 
-            // Log the current word in the console, you probably want to do something else here.
-            console.log(model.getLineContent(position.lineNumber));
-            console.log(model.getLineContent(position.lineNumber));
+        provideHover: function(model, position) {             
+            //console.log(model.getLineContent(position.lineNumber));
             /* 
                 var str= "    #ffffff        "
                 pos = str.search(/#(?:[0-9a-fA-F]){1,6}/gm)
@@ -395,7 +393,7 @@ require(["vs/editor/editor.main"], () => {
 
 
     var monacoEditor = window.monacoEditor = monaco.editor.create(monacoElement, {
-        value: "x => pow(x, 3)",
+        value: `//x => pow(x, 3)\n\n"#ff0000"`,
         language: 'javascript',
         theme: 'my-dark',
         lineNumbersMinChars: 2,
@@ -403,6 +401,10 @@ require(["vs/editor/editor.main"], () => {
             enabled: false
         }
     });
+    monacoEditor.setValueText = (str) => {
+        monacoEditor.setValue(str);     
+        colorSetup();   
+    }
     
     var monacoTextArea = monacoElement.querySelector("textarea");
 
@@ -418,39 +420,76 @@ require(["vs/editor/editor.main"], () => {
         contextMenuGroupId: "navigation",
         contextMenuOrder: 1.5,
 
-        run: function (ed) { },
+        run: (ed) => { },
     });
 
-    
-    var setup = () => {
+    var colorSetup = () => {
         var matches = monacoEditor.getModel().findMatches(regexHexColor, true, true, false, null, true);
 
         monacoEditor.removeDecorations(monacoEditor.getModel().getAllDecorations().map(e=>e.id))
 
         matches.forEach((match, i) => {
-            console.log(i, match.range);
             monacoEditor.createDecorationsCollection([
                 {
                     range: match.range,
                     options: {
                         isWholeLine: false,
-                        inlineClassName: "colorInputHighlight",
-                        hoverMessage: [{
-                            value: '**Selecionador de cores**'
-                        }, {
-                            value: `<span>Click duas vezes para abrir o selecionador.</span>`
-                        }]
+                        inlineClassName: "colorInputHighlight rangeOn_" + match.range.startLineNumber +"split"+ match.range.startColumn +"split"+ match.range.endLineNumber +"split"+ match.range.endColumn,
+                        hoverMessage: [
+                            { value: '**Selecionador de cores**'}, 
+                            { value: `<span>Click duas vezes para abrir o selecionador.</span>` }
+                        ]
                     }
                 }
-            ])
+            ]);
         });
     }
+    colorSetup();
+    monacoTextArea.addEventListener("input", colorSetup);
+    monacoEditor.onDidPaste(colorSetup);
 
-    setup();
-    
-    
-    monacoTextArea.addEventListener("input", setup);
-    monacoTextArea.addEventListener("paste", setup);
+    var m = ()=>console.log(2)
+    var observer = new MutationObserver(() => {
+        var colorInput = monacoElement.querySelectorAll(".colorInputHighlight");
+
+        if(!colorInput.length) return;
+
+        colorInput.forEach(el => {
+            var color = hexFix(el.innerHTML);
+
+            el.style.setProperty("--bgColor", color);
+            el.style.setProperty("--textColor", getContrastHex(color, true));
+
+            el.addEventListener("contextmenu", m);
+        });
+    })  
+    observer.observe(monacoElement, {childList: true, subtree: true});
+
+    addEventListener("dblclick", evt => {
+        var elementList = document.elementsFromPoint(evt.clientX, evt.clientY);
+
+        var colorInput = elementList.find(e => e.classList.contains("colorInputHighlight"));
+
+        if(!colorInput) return;
+
+        var range = colorInput.className.split(" ").find(e => e.includes("rangeOn")).replace("rangeOn_", "").split("split").map(e=>parseInt(e));
+        range = new monaco.Range(...range);
+
+        var fullText = monacoEditor.getValue().split("\n");
+
+        var line = fullText[range.startLineNumber-1];
+
+        var before = line.slice(0, range.startColumn - 1),
+            after  = line.slice(range.endColumn - 1, line.length);
+            
+        fullText[range.startLineNumber-1] = before + prompt("(WIP) Inset Color:","#ff00ff") + after;
+
+        console.log(fullText[range.startLineNumber-1]);
+
+        var newFullText = fullText.join("\n");
+
+        monacoEditor.setValueText(newFullText)
+    })
     
 
     new ResizeObserver(() => monacoEditor.layout()).observe(monacoElement);
