@@ -2,7 +2,10 @@ require.config({ paths: { 'vs': './scripts/monacoEditor/min/vs' }});
 
 var monacoElement = document.getElementById('monacoContainer');
 
-require(["vs/editor/editor.main"], () => {
+require(["vs/editor/editor.main"], async () => {
+
+    var cssColorNameList = window.cssColorNameList = await (await fetch("./scripts/cssColorNameList/cssColorNameList.json")).json();
+    var cssColorNameList_pt_BR = window.cssColorNameList_pt_BR = await (await fetch("./scripts/cssColorNameList/cssColorNameList_pt-BR.json")).json();
 
     var regexHexColor = /#(?:[0-9a-fA-F]){3,8}/;
 
@@ -31,6 +34,23 @@ require(["vs/editor/editor.main"], () => {
                 retArr.push(insert);
             });
         }
+
+        /* colors */
+
+        cssColorNameList_pt_BR.concat(cssColorNameList).forEach(c => {
+            addCompletions(["cor: "+c.name],{
+                kind: monaco.languages.CompletionItemKind.Function,
+                documentation: "Insira uma cor para ser usada ao plotar alguma coisa. Para mudar a cor selecione o texto duas vezes e um seletor irá abrir na sua tela.",
+                insertText: `"${c.hex}"`,
+                range: range,
+                insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+                command: {
+                    id: colorCommandId, // ID of the command of the callback function
+                    title: "commandTitle",
+                    arguments: ['item 1']
+                }
+            });
+        })
 
 
         /* custom */
@@ -408,6 +428,8 @@ require(["vs/editor/editor.main"], () => {
     
     var monacoTextArea = monacoElement.querySelector("textarea");
 
+    
+
     monacoEditor.addAction({
         id: "saveActionId",
         label: "Save",
@@ -447,8 +469,8 @@ require(["vs/editor/editor.main"], () => {
     colorSetup();
     monacoTextArea.addEventListener("input", colorSetup);
     monacoEditor.onDidPaste(colorSetup);
+    var colorCommandId = monacoEditor.addCommand(-1, () => colorSetup(), "");
 
-    var m = ()=>console.log(2)
     var observer = new MutationObserver(() => {
         var colorInput = monacoElement.querySelectorAll(".colorInputHighlight");
 
@@ -458,13 +480,13 @@ require(["vs/editor/editor.main"], () => {
             var color = hexFix(el.innerHTML);
 
             el.style.setProperty("--bgColor", color);
+            el.style.setProperty("--bgColorNoAlpha", workHex(color, true));
             el.style.setProperty("--textColor", getContrastHex(color, true));
-
-            el.addEventListener("contextmenu", m);
         });
     })  
     observer.observe(monacoElement, {childList: true, subtree: true});
 
+    /* eventListener for color input */
     addEventListener("dblclick", evt => {
         var elementList = document.elementsFromPoint(evt.clientX, evt.clientY);
 
@@ -477,19 +499,17 @@ require(["vs/editor/editor.main"], () => {
 
         var fullText = monacoEditor.getValue().split("\n");
 
-        var line = fullText[range.startLineNumber-1];
-
-        var before = line.slice(0, range.startColumn - 1),
+        var line = fullText[range.startLineNumber-1],
+            before = line.slice(0, range.startColumn - 1),
             after  = line.slice(range.endColumn - 1, line.length);
             
+        /* set color here */
         fullText[range.startLineNumber-1] = before + prompt("(WIP) Inset Color:","#ff00ff") + after;
-
-        console.log(fullText[range.startLineNumber-1]);
 
         var newFullText = fullText.join("\n");
 
         monacoEditor.setValueText(newFullText)
-    })
+    });
     
 
     new ResizeObserver(() => monacoEditor.layout()).observe(monacoElement);

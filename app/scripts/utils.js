@@ -22,9 +22,9 @@ const padZero = (str, len) => {
     return (zeros + str).slice(-len);
 }
 
-const intToHex = (int) => {
+const intToHex = (int, maxSize = Infinity, minSize = -Infinity) => {
     int = parseInt(int || 0);
-    int = int > 255? 255: int < 0? 0: int;
+    int = int > maxSize? maxSize: int < minSize? minSize: int;
     return int.toString(16);
 }
 
@@ -55,18 +55,18 @@ const hexToRgb = (hex, retString = false, noAlpha = false) => {
     return color;
 }
 
-const invertHex = (hex, noAlpha = false, noHashtag = false) => {
+const workHex = (hex, noAlpha = false, noHashtag = false) => {
     var color = hexToRgb(hex, false, noAlpha);
 
-    console.log(color);
+    return (noHashtag? "": "#") + fixHexColorValue(color.r) + fixHexColorValue(color.g) + fixHexColorValue(color.b) + fixHexColorValue(color.a*255);
+}
+const invertHex = (hex, noAlpha = false, noHashtag = false) => {
+    var color = hexToRgb(hex, false, noAlpha);
 
     color.r = 255 - color.r;
     color.g = 255 - color.g;
     color.b = 255 - color.b;
     color.a = noAlpha? color.a: 1 - color.a;
-
-    console.log(color);
-
 
     return (noHashtag? "": "#") + fixHexColorValue(color.r) + fixHexColorValue(color.g) + fixHexColorValue(color.b) + fixHexColorValue(color.a*255);
 }

@@ -179,14 +179,17 @@ body {
 
 .colorInputHighlight {
     --bgColor: #ffffff;
+    --bgColorNoAlpha: #ffffff;
     --textColor: black;
 	color: var(--textColor) !important;
-    background: var(--bgColor) !important;
-	border-radius: 5px;
+    background: linear-gradient(to right, transparent 40%, var(--bgColor));
+	border-radius: 10px;
 	font-weight: bold;
-    padding-right: 5px;
-    padding-left: 5px;
-    box-shadow: 0 0 3px var(--bgColor);
+    --paddingAmount: 2px;
+    padding-right: var(--paddingAmount);
+    padding-left: var(--paddingAmount);
+    text-shadow: 0 0 5px var(--bgColorNoAlpha);
+    /* box-shadow: 0 0 3px var(--bgColor); */
 }
 
 
