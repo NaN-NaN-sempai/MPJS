@@ -4,41 +4,18 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <link rel="icon" type="image/x-icon" href="../icon.png">
+    <link rel="icon" type="image/x-icon" href="../public/assets/images/icons/MPJS.png">
     <title>MPJS | Plotador Matemático</title>
-    <!-- <link rel="stylesheet" href="./styles/compiled.css"> -->
-
-    <!-- sass compiler -->
-    <script src="./scripts/sass/sass.js"></script>
-    <script>
-        var compiledCssText = "";
-        const compiledCss = () => open("", "_blank").document.write(compiledCssText);
-        if(true){
-            fetch("./styles/main.scss")
-            .then(r=>r.text())
-            .then(scss => {
-                var sass = new Sass();
-                sass.compile(scss, function(result) {
-                    var style = document.createElement("style");
-                        style.innerHTML = result.text;
-                    document.head.append(style);
-
-                    compiledCssText = result.text;
-                    monaco.editor.remeasureFonts();
-                });
-            })
-        }
-        
-    </script>
-    <!-- sass building -->
+    <link rel="stylesheet" href="./assets/styles/main.css">
 
     <!-- monaco Css -->
-    <link rel="stylesheet" data-name="vs/editor/editor.main" href="./scripts/monacoEditor/min/vs/editor/editor.main.css">
+    <!-- <link rel="stylesheet" data-name="vs/editor/editor.main" href="./assets/scripts/monacoEditor/min/vs/editor/editor.main.css"> -->
+    <!-- somehow it works without the link tag -->
 
 </head>
 <body>
-    <div class="containerContainer">
-        <div class="container"></div>
+    <div class="screenContainer">
+        <div class="planeContainer"></div>
     </div>
 
     <div class="code">
@@ -47,7 +24,6 @@
         <div class="resizeThumb">
             <div class="thumbGraphic"></div>
         </div>
-
 
         <div class="wiphide">
             <label>Equação <span id="equacaoSpan"></span></label><br>
@@ -74,6 +50,8 @@
         </div>
     </div>
 
+    <div class="graphObjectHover"></div>
+
     <div class="mouseGridFollower">
         <div class="xbar"></div>
         <div class="ybar"></div>
@@ -83,17 +61,33 @@
     </div>
 
     <div class="navegacao">
-        <a href="../">Início</a> | <a href="../doc">Documentação</a>
+        <a href="../assets/">Início</a> | <a href="../assets/doc">Documentação</a>
     </div>
 </body>
 <!-- utilities -->
-<script src="./scripts/utils.js"></script>
+<script src="./assets/scripts/utils.js"></script>
+
+<!-- json -->
+<script>
+    /* css color names */
+    customRequire({url: "./assets/json/cssColorNameList/cssColorNameList.json"}, (req) => window.cssColorNameList = req.json());
+    /* css color names pt-BR */
+    customRequire({url: "./assets/json/cssColorNameList/cssColorNameList_pt-BR.json"}, (req) => window.cssColorNameList_pt_BR = req.json());
+    /* glyphs */
+    customRequire({url: "./assets/json/glyphs/glyphs.json"}, (req) => window.glyphs = req.json());
+</script>
+
+<!-- color palette -->
+<script>
+    customRequire({url: "../public/assets/styles/_palette.scss"}, (req) => window.palette = req.scss());
+</script>
+
 
 <!-- resize code -->
-<script src="./scripts/resizeCode.js"></script>
+<script src="./assets/scripts/resizeCode.js"></script>
 
 <!-- nerdamer equation solver -->
-<script src="./scripts/nerdamer/equations.js"></script>
+<script src="./assets/scripts/nerdamer/equations.js"></script>
 <script>
     var equacao = (...test) => {
         var solved, retObj = {};
@@ -133,17 +127,17 @@
 </script>
 
 <!-- monaco editor -->
-<script src="./scripts/monacoEditor/min/vs/loader.js"></script>
-<script src="./scripts/monacoEditorBuilder.js"></script>
+<script src="./assets/scripts/monacoEditor/min/vs/loader.js"></script>
+<script src="./assets/scripts/monacoEditorBuilder.js" data-script-mode="dev" ></script> <!-- dev | min -->
 <!-- monaco editor -->
 
 
-<script src="./scripts/main.js"></script>
-<script src="./scripts/mouseMove.js"></script>
+<script src="./assets/scripts/main.js"></script>
+<script src="./assets/scripts/mouseMove.js"></script>
 
 
 <!-- share -->
-<script src="./scripts/share.js"></script>
+<script src="./assets/scripts/share.js"></script>
 
 <!-- remover iframe content -->
 <!-- <script>
