@@ -6,14 +6,16 @@ const cordDefault = {x: 0, y:0};
 const sizeDefault = 10;
 const generateInterval = (from = -50, to = 50, steps = 1) => {
     var arr = [];
-    for(i = from; (from>to? i >= to: i <= to); i = (from>to? i - steps: i + steps)){
+    var wich = from>to;
+    for(i = from; (wich? i >= to: i <= to); i = (wich? i - steps: i + steps)){
         arr.push(i);
     }
+    if(wich? arr.at(-1) > to: (from<to? arr.at(-1) < to: false)) arr.push(to);
     return arr;
 };
 const defaultInterval = generateInterval(-50, 50);
 
-const toFixedFormated = n => n % 1 !== 0 ? n.toFixed(decimalAmount.value) : n;
+const formatFix = n => n % 1 !== 0 ? n.toFixed(decimalAmount.value) : n;
 
 const setupGraphObjectHover = (el, options = {}) => {
     options = Object.assign({
@@ -62,21 +64,19 @@ const plotDot = (cord = cordDefault, options = {}) => {
         outline: palette.mainColorContrast
     }, options);
 
-    var displayX = toFixedFormated(cord.x),
-        displayY = toFixedFormated(cord.y),
-        el = document.createElement("div");
+    var dot = document.createElement("div");
 
-        el.style.setProperty("--color", options.color);
-        el.style.setProperty("--outline", options.outline);
-        el.style.setProperty("--size", options.size + "px");
+        dot.style.setProperty("--color", options.color);
+        dot.style.setProperty("--outline", options.outline);
+        dot.style.setProperty("--size", options.size + "px");
 
-        el.className = "dot graphObject";
-        el.style.left = (cord.x + 50) + "%";
-        el.style.bottom = (cord.y + 50) + "%";
+        dot.className = "dot graphObject";
+        dot.style.left = (cord.x + 50) + "%";
+        dot.style.bottom = (cord.y + 50) + "%";
 
         if(options.setupHover) {
-            setupGraphObjectHover(el, {
-                text: "Ponto => x: " + toFixedFormated(displayX) + ", y: " + toFixedFormated(displayY),
+            setupGraphObjectHover(dot, {
+                text: "Ponto => " + (compareObjs(cord, cordDefault)? "Na Origem": "x: " + formatFix(cord.x) + ", y: " + formatFix(cord.y)),
                 color: options.color,
                 outline: options.outline,
                 textColor: getContrastHex(options.color, true)
@@ -84,9 +84,9 @@ const plotDot = (cord = cordDefault, options = {}) => {
         }
         
 
-    plane.append(el);
+    plane.append(dot);
 
-    if(options.returnEl) return el;
+    if(options.returnEl) return dot;
 }
 
 
@@ -119,7 +119,7 @@ const plotLine = (from = cordDefault, to = cordDefault, options = {})  => {
 
         if(options.setupHover){
             setupGraphObjectHover(el, {
-                text: "Linha => De x: " + toFixedFormated(from.x) + ", y: " + toFixedFormated(from.y) + " para x: " + toFixedFormated(to.x) + ", y: " +toFixedFormated(to.y),
+                text: "Linha => De x: " + formatFix(from.x) + ", y: " + formatFix(from.y) + " para x: " + formatFix(to.x) + ", y: " +formatFix(to.y),
                 color: options.color
             });
         }
@@ -142,9 +142,9 @@ const plotVector = (to = cordDefault, options = {})  => {
     
     var towards = {  x: options.position.x + to.x,   y: options.position.y + to.y  };
 
-    var notPointing = options.position.x == towards.x && options.position.y == towards.y;
+    var notPointing = compareObjs(options.position, towards);
 
-    var text = `Vetor => ${options.position != cordDefault? `Em x: ${toFixedFormated(options.position.x)}, y: ${toFixedFormated(options.position.y)}`: ""}${!notPointing? ` Apontando para x: ${toFixedFormated(towards.x)}, y: ${toFixedFormated(towards.y)}`: ""}${notPointing && options.position == cordDefault? "Na Origem": ""}`;
+    var text = `Vetor => ${!compareObjs(options.position, cordDefault)? `Em x: ${formatFix(options.position.x)}, y: ${formatFix(options.position.y)}`: ""}${!notPointing? ` Apontando para x: ${formatFix(towards.x)}, y: ${formatFix(towards.y)}`: ""}${notPointing && compareObjs(options.position, cordDefault)? "Na Origem": ""}`;
     var setupHover = {
         text,
         color: options.color
@@ -216,23 +216,23 @@ const plotFunction = (func = () => cordDefault, options = {}) => {
     options.interval.forEach((n, i, arr) => {
         var pos = func(n);
         var setupHover = {
-            text: "Função => x: " + toFixedFormated(pos.x) + ", y: " + toFixedFormated(pos.y) + " em ("+ toFixedFormated(n) +") de "+ toFixedFormated(arr[0]) +" a "+ toFixedFormated(arr.at(-1)),
+            text: "Função => " + (compareObjs(pos, cordDefault)? "Na Origem": "x: " + formatFix(pos.x) + ", y: " + formatFix(pos.y)) + ", em ("+ formatFix(n) +") de ["+ formatFix(arr[0]) +" a "+ formatFix(arr.at(-1))+"]",
             color: options.color,
             outline: options.outline,
             textColor
         };
         var dot = plotDot(pos, {returnEl: true, setupHover: false, size: options.size, color: options.color, outline: options.outline});
         
+        dot.classList.add("functionDot");
         setupGraphObjectHover(dot, setupHover); 
 
         if(i == arr.length-1) return;
 
         var nextValue = arr[i+1];
         var pos2 = func(nextValue);
-        setupHover.text =  "Função => x: " + toFixedFormated(pos2.x) + ", y: " + toFixedFormated(pos2.y) + " em ("+ toFixedFormated(arr[i+1]) +") de "+ toFixedFormated(arr[0]) +" a "+ toFixedFormated(arr.at(-1))
-
         var line = plotLine(pos, pos2, {returnEl: true, setupHover: false, size: options.size, color: options.color});
         
+        line.classList.add("functionLine");
         setupGraphObjectHover(line, setupHover);
         els.push(dot, line);
     });
@@ -377,6 +377,6 @@ document.getElementById("xZoom").addEventListener("input", reiniciar);
 document.getElementById("intervaloI").addEventListener("input", reiniciar);
 document.getElementById("intervaloF").addEventListener("input", reiniciar);
 document.getElementById("deicmais").addEventListener("input", reiniciar);
-window.addEventListener("resize", reiniciar);
+// window.addEventListener("resize", reiniciar);
 
 /* executar_funcao(funcao_padrao); */

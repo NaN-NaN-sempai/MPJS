@@ -146,17 +146,23 @@ const getScssVariables = (script) => {
 
 /* require */
 const customRequire = (options = {url: "", method: "GET", async: false}, callback = ()=>{}) => {
+    if(typeof options == "string") options = {url: options};
     options = Object.assign({url: "", method: "GET", async: false}, options);
     const xhttp = new XMLHttpRequest();
 
     xhttp.onload = function(...event) {
-        if (this.status == 404) throw "Requisition not found: "+options.url+"\n\noptions: "+JSON.stringify(options, null, 4) + "\n\ncallback: " + callback; 
+        if (this.status == 404) {
+            console.error("Requisition not found: "+options.url+"\n\noptions: "+JSON.stringify(options, null, 4) + "\n\ncallback: " + callback);
+            this.errorOccurred = true;
+        };
+
+        this.usedOptions = options; 
 
         var contentType = this.getResponseHeader('content-type').split('/')[1];
         this.text = () => this.responseText;
         this.json = () => contentType.includes("json")? JSON.parse(this.response): ["Request is not JSON."];
         this. js  = () => contentType.includes("javascript")? evalJsModule(this.response): "Request is not Javascript.";
-        this.scss = () => contentType.includes("scss")? getScssVariables(this.response): "Request is SCSS or a erorr hapned during match proccess.";
+        this.scss = () => options.url.toLowerCase().endsWith(".scss")? getScssVariables(this.response): "Request is not SCSS or an error occurred during match proccess.";
 
         callback(this, event);
     }
@@ -165,4 +171,8 @@ const customRequire = (options = {url: "", method: "GET", async: false}, callbac
     xhttp.send();
 }
 
+
+
+/* compare objects */
+const compareObjs = (obj, obj2) => JSON.stringify(obj) === JSON.stringify(obj2);
 

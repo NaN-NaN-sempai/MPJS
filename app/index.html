@@ -61,25 +61,31 @@
     </div>
 
     <div class="navegacao">
-        <a href="../assets/">Início</a> | <a href="../assets/doc">Documentação</a>
+        <a href="../">Início</a> | <a href="../doc">Documentação</a>
     </div>
 </body>
 <!-- utilities -->
-<script src="./assets/scripts/utils.js"></script>
+<script src="../public/assets/scripts/utils.js"></script>
 
 <!-- json -->
 <script>
     /* css color names */
-    customRequire({url: "./assets/json/cssColorNameList/cssColorNameList.json"}, (req) => window.cssColorNameList = req.json());
+    customRequire("./assets/json/cssColorNameList/cssColorNameList.json", r => window.cssColorNameList = r.json());
     /* css color names pt-BR */
-    customRequire({url: "./assets/json/cssColorNameList/cssColorNameList_pt-BR.json"}, (req) => window.cssColorNameList_pt_BR = req.json());
+    customRequire("./assets/json/cssColorNameList/cssColorNameList_pt-BR.json", r => window.cssColorNameList_pt_BR = r.json());
     /* glyphs */
-    customRequire({url: "./assets/json/glyphs/glyphs.json"}, (req) => window.glyphs = req.json());
+    customRequire("./assets/json/glyphs/glyphs.json", r => window.glyphs = r.json());
 </script>
 
 <!-- color palette -->
 <script>
-    customRequire({url: "../public/assets/styles/_palette.scss"}, (req) => window.palette = req.scss());
+    var dir = "public/assets/styles/_palette.scss";
+    
+    customRequire(". ./"+dir, r => window.palette = r);
+    
+    if(palette.errorOccurred) customRequire("https://raw.githubusercontent.com/NaN-NaN-sempai/MPJS/main/"+dir, r => window.palette = r);
+    
+    palette = palette.scss();
 </script>
 
 
