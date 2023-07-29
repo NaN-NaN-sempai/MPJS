@@ -7,6 +7,9 @@ SE SATISFAZER
 PLOTAR PONTO
 
 
+EDITAR resizeCode.js => mousemove prevent default apenas para mobile
+
+
 novo plotador baseado em js dinamico (WIP)
 
 transformar barras dos eixos x e y do plano cartesianos em objetos moviveis

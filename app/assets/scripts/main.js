@@ -1,13 +1,13 @@
 const plane = document.querySelector(".planeContainer"),
       graphObjectHover = document.querySelector(".graphObjectHover"),
-      decimalAmount = {value: 3};
+      decimalAmount = () => document.getElementById("decimalPlaces").value;
 
 const cordDefault = {x: 0, y:0};
-const sizeDefault = 10;
+const sizeDefault = () => parseInt(document.getElementById("sizeDefault").value);
 const generateInterval = (from = -50, to = 50, steps = 1) => {
     var arr = [];
     var wich = from>to;
-    for(i = from; (wich? i >= to: i <= to); i = (wich? i - steps: i + steps)){
+    for(var i = from; (wich? i >= to: i <= to); i = (wich? i - steps: i + steps)){
         arr.push(i);
     }
     if(wich? arr.at(-1) > to: (from<to? arr.at(-1) < to: false)) arr.push(to);
@@ -15,7 +15,7 @@ const generateInterval = (from = -50, to = 50, steps = 1) => {
 };
 const defaultInterval = generateInterval(-50, 50);
 
-const formatFix = n => n % 1 !== 0 ? n.toFixed(decimalAmount.value) : n;
+const formatFix = n => n % 1 !== 0 ? n.toFixed(decimalAmount()) : n;
 
 const setupGraphObjectHover = (el, options = {}) => {
     options = Object.assign({
@@ -60,7 +60,7 @@ const plotDot = (cord = cordDefault, options = {}) => {
         returnEl: false,
         setupHover: true,
         name: null,
-        size: sizeDefault,
+        size: sizeDefault(),
         color: palette.mainColor,
         outline: palette.mainColorContrast
     }, options);
@@ -77,7 +77,7 @@ const plotDot = (cord = cordDefault, options = {}) => {
 
         if(options.setupHover) {
             setupGraphObjectHover(dot, {
-                text: `Ponto ${options.name? `(${options.name}) `: ""}=> ${compareObjs(cord, cordDefault)? "Na Origem": `𝒙: ${formatFix(cord.x)}, 𝓎: ${formatFix(cord.y)}`}`,
+                text: `Ponto ${options.name? `(<b>${options.name}</b>) `: ""}=> ${compareObjs(cord, cordDefault)? "Na Origem": `𝒙: ${formatFix(cord.x)}, 𝓎: ${formatFix(cord.y)}`}`,
                 color: options.color,
                 outline: options.outline,
                 textColor: getContrastHex(options.color, true)
@@ -96,7 +96,7 @@ const plotLine = (from = cordDefault, to = cordDefault, options = {})  => {
         returnEl: false,
         setupHover: true,
         name: null,
-        size: sizeDefault,
+        size: sizeDefault(),
         color: palette.mainColorContrast
     }, options);
 
@@ -121,7 +121,7 @@ const plotLine = (from = cordDefault, to = cordDefault, options = {})  => {
 
         if(options.setupHover){
             setupGraphObjectHover(line, {
-                text: `Linha ${options.name? `(${options.name}) `: ""}=> ${(compareObjs(from, cordDefault)? "Da Origem": `De 𝒙: ${formatFix(from.x)}, 𝓎: ${formatFix(from.y)}`)}<br>Para ${(compareObjs(to, cordDefault)? "a Origem": `𝒙: ${formatFix(to.x)}, 𝓎: ${formatFix(to.y)}`)}<br>Distancia: ${formatFix(distance)}`,
+                text: `Linha ${options.name? `(<b>${options.name}</b>) `: ""}=> ${(compareObjs(from, cordDefault)? "Da Origem": `De 𝒙: ${formatFix(from.x)}, 𝓎: ${formatFix(from.y)}`)}<br>Para ${(compareObjs(to, cordDefault)? "a Origem": `𝒙: ${formatFix(to.x)}, 𝓎: ${formatFix(to.y)}`)}<br>Distancia: ${formatFix(distance)}`,
                 color: options.color
             });
         }
@@ -137,7 +137,7 @@ const plotVector = (to = cordDefault, options = {})  => {
         returnEl: false,
         setupHover: true,
         name: null,
-        size: sizeDefault,
+        size: sizeDefault(),
         color: palette.mainColorContrast,
         position: cordDefault
     }, options);
@@ -147,7 +147,7 @@ const plotVector = (to = cordDefault, options = {})  => {
 
     var notPointing = compareObjs(options.position, towards);
 
-    var text = `Vetor ${options.name? `(${options.name}) `: ""}=> Direção 𝒙: ${to.x}, 𝓎: ${to.y}<br>${!compareObjs(options.position, cordDefault)? `Em 𝒙: ${formatFix(options.position.x)}, 𝓎: ${formatFix(options.position.y)}`: ""}${!notPointing? `<br>Apontando para 𝒙: ${formatFix(towards.x)}, 𝓎: ${formatFix(towards.y)}`: ""}${notPointing && compareObjs(options.position, cordDefault)? "Na Origem": ""}`;
+    var text = `Vetor ${options.name? `(<b>${options.name}</b>) `: ""}=> Direção 𝒙: ${to.x}, 𝓎: ${to.y}<br>${!compareObjs(options.position, cordDefault)? `Em 𝒙: ${formatFix(options.position.x)}, 𝓎: ${formatFix(options.position.y)}`: ""}${!notPointing? `<br>Apontando para 𝒙: ${formatFix(towards.x)}, 𝓎: ${formatFix(towards.y)}`: ""}${notPointing && compareObjs(options.position, cordDefault)? "Na Origem": ""}`;
     var setupHover = {
         text,
         color: options.color
@@ -207,7 +207,7 @@ const plotFunction = (func = () => cordDefault, options = {}) => {
         returnEl: false,
         setupHover: true,
         name: null,
-        size: sizeDefault,
+        size: sizeDefault(),
         color: palette.mainColor,
         outline: palette.mainColorContrast,
         interval: defaultInterval
@@ -221,7 +221,7 @@ const plotFunction = (func = () => cordDefault, options = {}) => {
         var pos = func(n);
 
         var setupHover = {
-            text: `Função ${options.name? `(${options.name}) `: ""}=> ${compareObjs(pos, cordDefault)? "Na Origem": `𝒙: ${formatFix(pos.x)}, 𝓎: ${formatFix(pos.y)}`}<br>Em (${formatFix(n)}) de [${formatFix(arr[0])} a ${formatFix(arr.at(-1))}]`,
+            text: `Função ${options.name? `(<b>${options.name}</b>) `: ""}=> ${compareObjs(pos, cordDefault)? "Na Origem": `𝒙: ${formatFix(pos.x)}, 𝓎: ${formatFix(pos.y)}`}<br>Em (${formatFix(n)}) de [${formatFix(arr[0])} a ${formatFix(arr.at(-1))}]`,
             color: options.color,
             outline: options.outline,
             textColor
@@ -240,7 +240,7 @@ const plotFunction = (func = () => cordDefault, options = {}) => {
         var line = plotLine(pos, nextPos, {returnEl: true, setupHover: false, size: options.size, color: options.color});
         
         
-        setupHover.text = `Função ${options.name? `(${options.name}) `: ""}=> ${(compareObjs(pos, cordDefault)? "Da Origem": `De 𝒙: ${formatFix(pos.x)}, 𝓎: ${formatFix(pos.y)}`)}<br>Para ${(compareObjs(nextPos, cordDefault)? "a Origem": `𝒙: ${formatFix(nextPos.x)}, 𝓎: ${formatFix(nextPos.y)}`)}<br>Em (${formatFix(n)}) de [${formatFix(arr[0])} a ${formatFix(arr.at(-1))}]`;
+        setupHover.text = `Função ${options.name? `(<b>${options.name}</b>) `: ""}=> ${(compareObjs(pos, cordDefault)? "Da Origem": `De 𝒙: ${formatFix(pos.x)}, 𝓎: ${formatFix(pos.y)}`)}<br>Para ${(compareObjs(nextPos, cordDefault)? "a Origem": `𝒙: ${formatFix(nextPos.x)}, 𝓎: ${formatFix(nextPos.y)}`)}<br>Em (${formatFix(n)}) de [${formatFix(arr[0])} a ${formatFix(arr.at(-1))}]`;
 
         line.classList.add("functionLine");
         if(options.setupHover) setupGraphObjectHover(line, setupHover);
@@ -258,7 +258,7 @@ const plotConnection = (...params) => {
         returnEl: false,
         setupHover: true,
         name: null,
-        size: sizeDefault,
+        size: sizeDefault(),
         color: palette.mainColor,
         outline: palette.mainColorContrast,
     };
@@ -283,7 +283,7 @@ const plotConnection = (...params) => {
 
     cords.forEach((pos, i, arr) => {
         var setupHover = {
-            text: `Conexão ${options.name? `(${options.name}) `: ""}=> ${compareObjs(pos, cordDefault)? "Na Origem": `𝒙: ${formatFix(pos.x)}, 𝓎: ${formatFix(pos.y)}`}`,
+            text: `Conexão ${options.name? `(<b>${options.name}</b>) `: ""}=> ${compareObjs(pos, cordDefault)? "Na Origem": `𝒙: ${formatFix(pos.x)}, 𝓎: ${formatFix(pos.y)}`}`,
             color: options.color,
             outline: options.outline,
             textColor
@@ -301,7 +301,7 @@ const plotConnection = (...params) => {
         var nextPos = arr[i+1];
         var line = plotLine(pos, nextPos, {returnEl: true, setupHover: false, size: options.size, color: options.color});
         
-        setupHover.text = `Conexão ${options.name? `(${options.name}) `: ""}=> ${(compareObjs(pos, cordDefault)? "Da Origem": `De 𝒙: ${formatFix(pos.x)}, 𝓎: ${formatFix(pos.y)}`)}<br>Para ${(compareObjs(nextPos, cordDefault)? "a Origem": `𝒙: ${formatFix(nextPos.x)}, 𝓎: ${formatFix(nextPos.y)}`)}`;
+        setupHover.text = `Conexão ${options.name? `(<b>${options.name}</b>) `: ""}=> ${(compareObjs(pos, cordDefault)? "Da Origem": `De 𝒙: ${formatFix(pos.x)}, 𝓎: ${formatFix(pos.y)}`)}<br>Para ${(compareObjs(nextPos, cordDefault)? "a Origem": `𝒙: ${formatFix(nextPos.x)}, 𝓎: ${formatFix(nextPos.y)}`)}`;
 
         line.classList.add("connectionLine");
         if(options.setupHover) setupGraphObjectHover(line, setupHover);
@@ -331,7 +331,7 @@ const ponto = function(posicao = {}, opcoes = {}) {
     }, posicao);
 
     opcoes = Object.assign({
-        tamanho: sizeDefault,
+        tamanho: sizeDefault(),
         cor: palette.mainColor,
         borda: palette.mainColorContrast,
         nome: null,
@@ -352,7 +352,7 @@ const ponto = function(posicao = {}, opcoes = {}) {
 
     objectsToPlot.push(this);
 }
-const [p, P] = [ponto, ponto];
+const P = ponto;
 
 
 const linha = function(de = {}, para = {}, opcoes = {}) {
@@ -371,7 +371,7 @@ const linha = function(de = {}, para = {}, opcoes = {}) {
     }, para);
 
     opcoes = Object.assign({
-        tamanho: sizeDefault,
+        tamanho: sizeDefault(),
         cor: palette.mainColorContrast,
         plotar: true
     }, opcoes);
@@ -390,7 +390,7 @@ const linha = function(de = {}, para = {}, opcoes = {}) {
 
     objectsToPlot.push(this);
 }
-const [l, L] = [linha, linha];
+const L = linha;
 
 
 const plotObjects = () => {
@@ -475,6 +475,10 @@ const onCodeInputFunction = (evalString) => {
         document.querySelector(".erroDisplay").innerHTML = erro;
         document.querySelector(".erroDisplay").style.display = "block";
     } */
+}
+
+const reloadPlotting = () => {
+    onCodeInputFunction(lastWorkingCode);
 }
 
 

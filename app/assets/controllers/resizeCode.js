@@ -35,9 +35,9 @@ const functionMove = (movement) => {
         }
     }
 }
+
+/* prevent default only for mobile!! */
 addEventListener('mousemove', (event) => {
-    event.preventDefault();
-    
     if(innerWidth > 600) {
         functionMove(event.movementX);
     } else {

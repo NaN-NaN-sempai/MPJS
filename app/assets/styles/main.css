@@ -1,3 +1,4 @@
+@charset "UTF-8";
 :root {
   --mainBlue: #73d7ff;
   --darkerBlue: #739fff;
@@ -20,7 +21,6 @@
 
 body {
   overflow: hidden;
-  background: linear-gradient(to left, #1e1e1e, #e8d44d);
 }
 
 .screenContainer {
@@ -206,6 +206,151 @@ body {
   display: inline;
 }
 
+.menu {
+  --buttonSize: 30px;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  margin: 5px;
+}
+.menu .window {
+  width: 237px;
+  height: 300px;
+  border: #000000 2px solid;
+  background: #1e1e1e;
+  color: #e8d44d;
+  border-radius: 10px;
+  overflow-y: hidden;
+}
+.menu .window .title {
+  height: 8%;
+  padding-top: 3px;
+  width: 100%;
+  text-align: center;
+  background: #1e1e1e;
+  box-shadow: 0 0 10px #000000;
+  text-transform: uppercase;
+}
+.menu .window .innerWindow {
+  margin: 5px;
+  margin-top: 0;
+  margin-right: 0;
+  padding-top: 10px;
+  height: 92%;
+  overflow-y: scroll;
+}
+.menu .window .innerWindow .content.hidden {
+  display: none;
+}
+.menu .window .innerWindow .content hr {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-right: 5px;
+  border: 1px solid #e8d44d !important;
+  border-radius: 20px;
+}
+.menu .window .innerWindow .content a {
+  color: #e8d44d;
+  cursor: pointer;
+}
+.menu .window .innerWindow .content input[type=range] {
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  position: relative;
+  overflow: hidden;
+  border-radius: 20px;
+  cursor: pointer;
+  background-color: #1e1e1e;
+}
+.menu .window .innerWindow .content input[type=range]::-webkit-slider-runnable-track {
+  height: 10px;
+  box-shadow: inset 0 0 5px #000000;
+  z-index: 1;
+}
+.menu .window .innerWindow .content input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+          appearance: none;
+  --size: 10px;
+  width: var(--size);
+  height: var(--size);
+  margin-top: -5px;
+  border-radius: 0 20px 20px 0;
+  margin-top: 0;
+  background-color: #e8d44d;
+  box-shadow: calc(-100vw - var(--size)) 0 0 100vw #e8d44d;
+  -webkit-clip-path: polygon(1px 0, 100% 0, 100% 100%, 1px 100%, 1px calc(50% + 14px), -100vw calc(50% + 14px), -100vw calc(50% - 14px), 0 calc(50% - 14px));
+          clip-path: polygon(1px 0, 100% 0, 100% 100%, 1px 100%, 1px calc(50% + 14px), -100vw calc(50% + 14px), -100vw calc(50% - 14px), 0 calc(50% - 14px));
+  z-index: 1;
+}
+.menu .window .innerWindow .content input[type=number] {
+  border-radius: 7px;
+  padding-left: 5px;
+  width: 50px;
+  background: #e8d44d;
+  color: #1e1e1e;
+  border: none;
+  box-shadow: inset 0 0 5px #000000;
+}
+.menu .window .innerWindow::-webkit-scrollbar {
+  width: 13px;
+}
+.menu .window .innerWindow::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px #000000;
+}
+.menu .window .innerWindow::-webkit-scrollbar-thumb {
+  background: #e8d44d;
+  border-radius: 3px;
+}
+.menu .window .innerWindow::-webkit-scrollbar-thumb:hover {
+  background: #c0aa1d;
+}
+.menu.minimized .window {
+  display: none;
+}
+.menu .menuItens {
+  width: -moz-fit-content;
+  width: fit-content;
+  display: flex;
+}
+.menu.minimized .menuItens {
+  width: 0;
+  display: none;
+}
+.menu .buttonsContainer {
+  display: flex;
+  justify-content: flex-end;
+}
+.menu .button {
+  border: #000000 2px solid;
+  background: #1e1e1e;
+  color: #e8d44d;
+  border-radius: 5px;
+  margin: 7px;
+  width: var(--buttonSize);
+  height: var(--buttonSize);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.menu .button::after {
+  content: attr(data-icon);
+}
+.menu .button:hover {
+  background: #000000;
+}
+.menu .switchBtn {
+  margin-right: 0;
+}
+.menu .switchBtn::after {
+  content: "►";
+}
+.menu.minimized .switchBtn::after {
+  content: "◄";
+}
+
 .ponto {
   background: var(--mainBlue);
   width: 5px;
@@ -266,46 +411,6 @@ body {
 .controladores #equacao {
     border-radius: 10px;
 } */
-input[type=number] {
-  border-radius: 10px;
-  border: 1px solid black;
-  width: 50px;
-}
-
-input[type=range] {
-  -webkit-appearance: none;
-     -moz-appearance: none;
-          appearance: none;
-  position: relative;
-  overflow: hidden;
-  cursor: pointer;
-}
-
-input[type=range]::-webkit-slider-runnable-track {
-  height: 10px;
-  background-color: var(--grey);
-  border-radius: 0 20px 20px 0;
-  -webkit-clip-path: polygon(0px -100vh, 100vw -100vh, 100vw 100vh, 0px 100vh);
-          clip-path: polygon(0px -100vh, 100vw -100vh, 100vw 100vh, 0px 100vh);
-  z-index: 1;
-}
-
-input[type=range]::-webkit-slider-thumb {
-  -webkit-appearance: none;
-          appearance: none;
-  --size: 10px;
-  width: var(--size);
-  height: var(--size);
-  margin-top: -5px;
-  border-radius: 0 20px 20px 0;
-  margin-top: 0;
-  background-color: var(--mainBlue);
-  box-shadow: calc(-100vw - var(--size)) 0 0 100vw var(--mainBlue);
-  -webkit-clip-path: polygon(1px 0, 100% 0, 100% 100%, 1px 100%, 1px calc(50% + 14px), -100vw calc(50% + 14px), -100vw calc(50% - 14px), 0 calc(50% - 14px));
-          clip-path: polygon(1px 0, 100% 0, 100% 100%, 1px 100%, 1px calc(50% + 14px), -100vw calc(50% + 14px), -100vw calc(50% - 14px), 0 calc(50% - 14px));
-  z-index: 1;
-}
-
 .mouseGridFollower {
   height: 100vh;
   width: 100%;

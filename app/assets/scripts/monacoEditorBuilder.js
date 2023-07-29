@@ -47,7 +47,7 @@ require(["vs/editor/editor.main"], async () => {
 
 
         /* plot */
-        addCompletions(["p", "P", "ponto"], {
+        addCompletions(["P", "ponto"], {
             kind: monaco.languages.CompletionItemKind.Function,
             documentation: "A função plota um ponto no grafico.",
             insertText: 'P(${1:posicao}${2:, opcoes})',
@@ -68,6 +68,15 @@ require(["vs/editor/editor.main"], async () => {
         plotar: booleano false para não plotar o ponto, os valores do ponto ainda podem ser acessados mesmo sem plotar,
         nome: string nome que aparecerá ao inspecionar o ponto
 */`+ '\n}ponto(${2:{x: 0, y: 0}}, {\n\tcor: ${3:"#E8D44D"},\n\tborda: ${4:"#1E1E1E"},\n\tplotar: ${5:true},\n\tnome: ${6:"nomeDoPonto"}\n});',
+            range: range,
+            insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+        });
+
+        
+        addCompletions(["cordenada"], {
+            kind: monaco.languages.CompletionItemKind.Function,
+            documentation: "Gera um exemplo de cordenada",
+            insertText: '{x: ${1:0}, y: ${2:0}}',
             range: range,
             insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
         });

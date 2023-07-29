@@ -25,6 +25,7 @@
             <div class="thumbGraphic"></div>
         </div>
 
+        <!-- remove later -->
         <div class="wiphide">
             <label>Equação <span id="equacaoSpan"></span></label><br>
             <p class="erroDisplay ignore"></p><br>
@@ -60,9 +61,94 @@
         </div> 
     </div>
 
-    <div class="navegacao">
-        <a href="../">Início</a> | <a href="../doc">Documentação</a>
+
+    <div class="menu minimized">
+        <div class="window">
+            <h3 class="title">navegação</h3>
+            <div class="innerWindow">
+                <div class="content" data-content="navigation" data-title="navegação">
+                    Ir para <a href="../">Início</a>.
+                    
+                    <hr>
+
+                    Ir para <a href="../doc">Documentação</a>.
+                </div>
+
+                <div class="content hidden" data-content="options" data-title="opções">
+                    <span>Intervalo:</span>
+                    <br>
+                    <input type="number" id="defaultIntervalBegin" value="-50">
+                    <span>|</span>
+                    <input type="number" id="defaultIntervalEnd" value="50">
+
+                    <hr>
+                    
+                    <span>Resolução do Intervalo:</span>
+                    <br>
+                    <input type="range"  id="intervalResolutionRange" value="1" step=".05" min=".05" max="10"> <br>
+                    <input type="number" id="intervalResolution" value="1" step=".05" min=".05">
+
+                    <hr>
+
+                    <span>Tamanho de plotagem padrão:</span>
+                    <br>
+                    <input type="range"  id="sizeDefaultRange" value="10" step="1" min="1" max="50"> <br>
+                    <input type="number" id="sizeDefault" value="10" min="1">
+
+                    <hr>
+                    
+                    <span>Casas decimais ao inspecionar:</span>
+                    <br>
+                    <input type="number" id="decimalPlaces" value="3">
+
+                </div>
+
+                <div class="content hidden" data-content="controllers" data-title="controladores">
+                    WORKING IN PROGRESS...
+                </div>
+                <br>
+                <br>
+            </div>
+        </div>
+        <div class="buttonsContainer">
+            <div class="menuItens">
+                <div data-icon="?"   data-content="navigation"  title="Navegação" class="button"></div>
+                <div data-icon="⚙️" data-content="options"     title="Opções" class="button"></div>
+                <div data-icon="🕹️" data-content="controllers" title="Controladores" class="button"></div>            
+            </div>
+            <div class="button switchBtn" title="Maximizar/minimizar menu"></div>
+        </div>
     </div>
+
+    <!-- menu controller -->
+    <script>
+        var menuSwitchButton = document.querySelector(".menu .switchBtn");
+
+        menuSwitchButton.addEventListener("click", () => {
+            var menu = document.querySelector(".menu");
+            menu.classList.toggle("minimized");
+        });
+
+        var menuButtons = [...document.querySelectorAll(".menu .menuItens .button")];
+
+        menuButtons.forEach(button => {
+            button.addEventListener("click", () => {
+                var content = [...document.querySelectorAll(".menu .innerWindow .content")];
+                var title = document.querySelector(".menu .window .title");
+                
+                content.forEach(e => e.classList.add("hidden"));
+                title.innerHTML = "";
+
+                var choseContent = content.find(e => e.dataset.content == button.dataset.content);
+
+                if(!choseContent) return;
+
+                title.innerHTML = choseContent.dataset.title;
+
+                choseContent.classList.remove("hidden");
+            }) 
+        });
+    </script>
 </body>
 <!-- utilities -->
 <script src="../public/assets/scripts/utils.js"></script>
@@ -90,7 +176,7 @@
 
 
 <!-- resize code -->
-<script src="./assets/scripts/resizeCode.js"></script>
+<script src="./assets/controllers/resizeCode.js"></script>
 
 <!-- nerdamer equation solver -->
 <script src="./assets/scripts/nerdamer/equations.js"></script>
@@ -139,11 +225,19 @@
 
 
 <script src="./assets/scripts/main.js"></script>
-<script src="./assets/scripts/mouseMove.js"></script>
+
+<!-- mouse positiono indicator -->
+<script src="./assets/controllers/mouseMove.js"></script>
 
 
 <!-- share -->
-<script src="./assets/scripts/share.js"></script>
+<script src="./assets/controllers/share.js"></script>
+
+
+<!-- menu options contorller -->
+<script src="./assets/controllers/menuOptions.js"></script>
+
+
 
 <!-- remover iframe content -->
 <!-- <script>
