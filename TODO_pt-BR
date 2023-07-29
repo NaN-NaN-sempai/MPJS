@@ -1,8 +1,17 @@
+CRIAR FUNNÇÃO COMPLEXA:
+PASSA POR CADA CORDENADA - PIXEL DA TELA,
+TRADUZ A CORDENADA PARA 0, 0 SER TAMANHO DA TELA / 2
+(FUTURAMENTE USAR OFFSET NA TRADUÇÃO PARA PODER MOVER O GRAFICO)
+CHECA SE CORDENADA SATISFAZ O FILTRO
+SE SATISFAZER
+PLOTAR PONTO
+
+
+novo plotador baseado em js dinamico (WIP)
+
 transformar barras dos eixos x e y do plano cartesianos em objetos moviveis
 
 concertar indicador de posição do mouse
-
-novo plotador baseado em js dinamico
 
 aba de configuraçãos
 

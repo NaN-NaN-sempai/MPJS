@@ -81,7 +81,7 @@
 <script>
     var dir = "public/assets/styles/_palette.scss";
     
-    customRequire(". ./"+dir, r => window.palette = r);
+    customRequire("../"+dir, r => window.palette = r);
     
     if(palette.errorOccurred) customRequire("https://raw.githubusercontent.com/NaN-NaN-sempai/MPJS/main/"+dir, r => window.palette = r);
     

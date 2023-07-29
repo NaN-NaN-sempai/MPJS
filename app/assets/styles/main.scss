@@ -60,10 +60,11 @@ body {
     color: var(--textColor);
     position: absolute;
     padding: 10px;
-    border-radius: 50px;
+    border-radius: 20px;
     white-space: nowrap;
     overflow: hidden;
     display: none; 
+    text-align: center;
 }
 
 
@@ -85,19 +86,22 @@ body {
     }
 
     .line {
+        --angle: 0deg;
         --color: #ffffff;
         background: var(--color);
         border: none;
-        transform: translate(-50%, 50%);
+        transform: translate(-50%, 50%) rotate(var(--angle));
         position: absolute;
         border-radius: 9999999px;
     }
     
-    .vectorHead {
+    .vector.head {
+        --angle: 0deg;
         border-radius: 0;
         clip-path: polygon(50% 0, 100% 100%, 50% 75%, 0 100%);
+        transform: translate(-50%, 50%) rotate(var(--angle));
 
-        &.vectorHeadNotPointing {
+        &.notPointing {
             clip-path: polygon(0 0, 50% 25%, 100% 0, 75% 50%, 100% 100%, 50% 75%, 0 100%, 25% 50%);
         }
     }
@@ -232,6 +236,29 @@ body {
 
 
 
+
+.monacoContainer {
+    .parameter-hints-widget .phwrapper .monaco-scrollable-element  .body .signature {
+        width: 200px;
+        height: 50px;
+        /* height: 200px; */
+
+        .code {
+            display: inline;
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
 .ponto {
     background: var(--mainBlue);
     width: 5px;
@@ -265,6 +292,10 @@ body {
     transform: translate(-50%, 50%);
     position: absolute;
 }
+
+
+
+
 
 
 

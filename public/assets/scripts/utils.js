@@ -1,3 +1,15 @@
+/* html changes */
+/* 
+const observer = new MutationObserver((e) => {
+    var event = new CustomEvent("htmlupdate", {detail: e});
+    
+    dispatchEvent(event);
+})  
+observer.observe(document, {subtree: true, childList: true, attributes: true, attributeOldValue: true}); */
+
+
+
+
 /* colors */
 const hexFix = (hex, noHashtag = false) => {
     if (hex.indexOf('#') == 0) hex = hex.slice(1);
@@ -99,6 +111,9 @@ const getContrastHex = (hex, noAlpha = false, noHashtag = false) => {
     return (noHashtag? "": "#") + (brightness > 125? '000000' : 'FFFFFF') + fixHexColorValue(color.a*255);
 }
 
+
+/* random */
+const randomNumber = (upto = 100) => Math.floor(Math.random() * upto);
 
 
 /* scoped eval */

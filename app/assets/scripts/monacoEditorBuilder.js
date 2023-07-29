@@ -45,6 +45,36 @@ require(["vs/editor/editor.main"], async () => {
             });
         }
 
+
+        /* plot */
+        addCompletions(["p", "P", "ponto"], {
+            kind: monaco.languages.CompletionItemKind.Function,
+            documentation: "A função plota um ponto no grafico.",
+            insertText: 'P(${1:posicao}${2:, opcoes})',
+            range: range,
+            insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+        });
+        addCompletions(["exemplo_ponto"], {
+            kind: monaco.languages.CompletionItemKind.Function,
+            documentation: "A função plota um ponto no grafico.",
+            insertText: 
+"${1:"+`/*
+    ponto(posicao, opcoes);
+
+    posicao - x: numero, y: numero
+    opcoes -
+        cor: string cor do ponto
+        borda: string cor da borda do ponto,
+        plotar: booleano false para não plotar o ponto, os valores do ponto ainda podem ser acessados mesmo sem plotar,
+        nome: string nome que aparecerá ao inspecionar o ponto
+*/`+ '\n}ponto(${2:{x: 0, y: 0}}, {\n\tcor: ${3:"#E8D44D"},\n\tborda: ${4:"#1E1E1E"},\n\tplotar: ${5:true},\n\tnome: ${6:"nomeDoPonto"}\n});',
+            range: range,
+            insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+        });
+
+
+
+
         /* colors */
 
         cssColorNameList_pt_BR.forEach(c => {
@@ -87,24 +117,6 @@ require(["vs/editor/editor.main"], async () => {
                 range: range,
                 insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet
             });
-        });
-
-
-        /* custom */
-
-        addCompletions(["função", "funcao", "function"],{
-            kind: monaco.languages.CompletionItemKind.Function,
-            documentation: "Defina funçãoes",
-            insertText: 'ƒ(${1:valor1}${2:, ...}){\n\t${3:// sua função}\n};',
-            range: range,
-            insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
-        });
-        addCompletions(["PI"],{
-            kind: monaco.languages.CompletionItemKind.Variable,
-            documentation: "A conostante PI representa a proporção entre circunferência de um círculo com o seu diâmetro, aproximadamente 3.14159",
-            insertText: 'π',
-            range: range,
-            insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
         });
 
 
@@ -410,6 +422,13 @@ require(["vs/editor/editor.main"], async () => {
             range: range,
             insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
         });
+        addCompletions(["PI"],{
+            kind: monaco.languages.CompletionItemKind.Variable,
+            documentation: "A conostante PI representa a proporção entre circunferência de um círculo com o seu diâmetro, aproximadamente 3.14159",
+            insertText: 'PI',
+            range: range,
+            insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+        });
         
         return retArr;
     }
@@ -443,11 +462,15 @@ require(["vs/editor/editor.main"], async () => {
         }
     });
 
+
+    monaco.languages.typescript.javascriptDefaults.addExtraLib(``, 'filename/facts.d.ts');
+    
     var monacoEditor = window.monacoEditor = monaco.editor.create(monacoElement, {
-        value: `//x => pow(x, 3)\n\n"#ff0000"`,
+        value: `//escreva "exemplo_ponto" e selecione a sugestão para plotar um ponto`,
         language: 'javascript',
         theme: 'my-dark',
         lineNumbersMinChars: 2,
+        wordWrap: "on",
         unicodeHighlight: {
             ambiguousCharacters: false,
         },
@@ -567,4 +590,8 @@ require(["vs/editor/editor.main"], async () => {
     monacoTextArea.addEventListener("focus", () => monacoElement.style.opacity = 1);
     monacoTextArea.addEventListener("blur", () => monacoElement.style.opacity = "");
     monacoTextArea.focus();
+
+    monacoEditor.onDidChangeModelContent(() => {
+        onCodeInputFunction(monacoEditor.getValue())
+    });
 });
