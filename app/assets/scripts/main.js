@@ -320,7 +320,7 @@ const eraseGraph = () => [...document.querySelectorAll(".plotedObject")].forEach
 
 const objectsToPlot = [];
 
-function ponto(posicao = {}, opcoes = {}) {
+const ponto = function(posicao = {}, opcoes = {}) {
     if (!(this instanceof ponto)) return new ponto(posicao, opcoes);
 
     this.type = "dot";
@@ -355,7 +355,7 @@ function ponto(posicao = {}, opcoes = {}) {
 const [p, P] = [ponto, ponto];
 
 
-function linha(de = {}, para = {}, opcoes = {}) {
+const linha = function(de = {}, para = {}, opcoes = {}) {
     if (!(this instanceof linha)) return new linha(de, para, opcoes);
 
     this.type = "line";
