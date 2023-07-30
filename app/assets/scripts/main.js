@@ -25,7 +25,7 @@ const setupGraphObjectHover = (el, options = {}) => {
         textColor: getContrastHex(palette.mainColorContrast, true)
     }, options);
 
-    el.addEventListener("mousemove", (evt) => {
+    var hoverFunction = (evt) => {
         graphObjectHover.style.display ="inline";
 
         graphObjectHover.style.setProperty("--color", options.color);
@@ -45,7 +45,9 @@ const setupGraphObjectHover = (el, options = {}) => {
             evt.clientX - graphObjectHover.getBoundingClientRect().width - mouseOffset + "px":
             evt.clientX + mouseOffset + "px";
 
-    });
+    }
+    el.addEventListener("mouseover", hoverFunction);
+    el.addEventListener("mousemove", hoverFunction);
     el.addEventListener("mouseout", () => {
         graphObjectHover.style.display ="none";
         
@@ -441,6 +443,7 @@ Object.getOwnPropertyNames(Math).forEach(e => {
 
 var lastWorkingCode = "";
 const onCodeInputFunction = (evalString) => {
+    graphObjectHover.style.display ="none";
     objectsToPlot.length = 0;
     codeControllersIds.length = 0;
     

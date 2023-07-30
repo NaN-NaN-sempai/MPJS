@@ -95,13 +95,30 @@ require(["vs/editor/editor.main"], async () => {
 controlador(nome, tipo, opcoes);
 
 nome - string nome do controlador
-tipo - string ("deslizante" || "numero" || "cor") tipo do controlador 
+tipo - string ("deslizante" || "numero" || "cor" || "automação") tipo do controlador 
 opcoes -
     minimo: numero minimo para controladores ("deslizante" || "numero"),
     maximo: numero maximo para controladores ("deslizante" || "numero"),
     passos: numero quantidade de numeros inseridos por vez para controladores ("deslizante" || "numero"),
     valor: numero valor atual para controladores ("deslizante" || "numero")
 */`+ '\n}controlador("${2:nome}", "${3:deslizante}", {\n\tminimo: ${4:-50},\n\tmaximo: ${5:50},\n\tpassos: ${6:1}${7:,\n\tvalor: 0\n}});',
+            range: range,
+            insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+        });
+        addCompletions(["exemplo_controlador_automação"], {
+            kind: monaco.languages.CompletionItemKind.Function,
+            documentation: "A função gera um controlador que pode ser acessado no menu inferior direito.",
+            insertText:
+"${1:"+`/*
+controlador(nome, "automação", opcoes);
+
+nome - string nome do controlador
+"automação" - string tipo do controlador 
+opcoes para controlador tipo "automação" -
+    intervalo: numero tempo em milisegundos para a automação reiniciar,
+    tipoAutomacao: string ("linear" || "ping pong" ou "sin" || "ping pong 2" ou "cos") tipo da automação,
+    customAutomacao: função recebe um valor e retorna outro valor que sera utilizado no controlador, se customAutomacao for diferente de nulo, o tipo da automação será "customizado" e o valor de tipoAutomacao será ignorado.
+*/`+ '\n}controlador("${2:nome}", "automação", {\n\tintervalo: ${3:100},\n\ttipoAutomacao: "${4:ping pong}",\n\tcustomAutomacao: n => ${5:n/2},\n\tminimo: ${6:0},\n\tmaximo: ${7:10},\n\tpassos: ${8:1}\n});',
             range: range,
             insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
         });
