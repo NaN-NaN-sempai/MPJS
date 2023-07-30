@@ -418,13 +418,26 @@ const plotObjects = () => {
 }
 
 
-/* setup math */
-Object.getOwnPropertyNames(Math).forEach(e => {
-    window[e] = Math[e];
-});
 
 
 const windowScopeEval = (...params) => eval(...params);
+
+
+
+
+/* setup math */
+Object.getOwnPropertyNames(Math).forEach(e => {
+    Object.defineProperty(window,
+        e,
+        {
+            value: Math[e],
+            enumerable: true,
+            configurable: true,
+            writable: false
+        });
+});
+
+
 
 var lastWorkingCode = "";
 const onCodeInputFunction = (evalString) => {
