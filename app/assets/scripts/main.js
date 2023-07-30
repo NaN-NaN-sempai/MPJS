@@ -429,6 +429,7 @@ const windowScopeEval = (...params) => eval(...params);
 var lastWorkingCode = "";
 const onCodeInputFunction = (evalString) => {
     objectsToPlot.length = 0;
+    codeControllersIds.length = 0;
     
     var worked;
     try {
@@ -437,7 +438,7 @@ const onCodeInputFunction = (evalString) => {
 
     } catch (error) {
         windowScopeEval(lastWorkingCode);
-        console.log(error);
+        //console.log(error);
         worked = false;
     }
 
@@ -446,35 +447,7 @@ const onCodeInputFunction = (evalString) => {
     lastWorkingCode = evalString;
 
     plotObjects();
-    
-
-    /* var {monacoEditor} = event.detail;
-    
-    var equacao = monacoEditor.getValue();
-    var span = document.getElementById("equacaoSpan");
-
-    location.hash = encodeURI(equacao);
-
-    if(equacao.length < 5) monacoEditor.setValue("x => ");
-
-    try {
-        apagar_tudo();
-        executar_funcao(eval("with(Math){"+equacao+"}"));
-        //equacao.classList.remove("erro");
-        span.classList.remove("erro");
-        document.querySelector(".erroDisplay").classList.remove("erro");
-        document.querySelector(".erroDisplay").innerHTML = "";
-        document.querySelector(".erroDisplay").style.display = "none";
-
-    } catch (erro) {
-        apagar_tudo();
-        executar_funcao(funcao_padrao);
-        //equacao.classList.add("erro");
-        span.classList.add("erro");
-        document.querySelector(".erroDisplay").classList.add("erro");
-        document.querySelector(".erroDisplay").innerHTML = erro;
-        document.querySelector(".erroDisplay").style.display = "block";
-    } */
+    renewCodeControllers();
 }
 
 const reloadPlotting = () => {

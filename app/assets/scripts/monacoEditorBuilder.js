@@ -63,11 +63,45 @@ require(["vs/editor/editor.main"], async () => {
 
     posicao - x: numero, y: numero
     opcoes -
-        cor: string cor do ponto
+        cor: string cor do ponto,
         borda: string cor da borda do ponto,
         plotar: booleano false para não plotar o ponto, os valores do ponto ainda podem ser acessados mesmo sem plotar,
         nome: string nome que aparecerá ao inspecionar o ponto
 */`+ '\n}ponto(${2:{x: 0, y: 0}}, {\n\tcor: ${3:"#E8D44D"},\n\tborda: ${4:"#1E1E1E"},\n\tplotar: ${5:true},\n\tnome: ${6:"nomeDoPonto"}\n});',
+            range: range,
+            insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+        });
+        addCompletions(["L", "linha"], {
+            kind: monaco.languages.CompletionItemKind.Function,
+            documentation: "A função plota uma linha em duas posições no grafico.",
+            insertText: 'L(${1:de},${2:para}${3:, opcoes})',
+            range: range,
+            insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+        });
+
+        
+        addCompletions(["controlador"], {
+            kind: monaco.languages.CompletionItemKind.Function,
+            documentation: "A função gera um controlador que pode ser acessado no menu inferior direito.",
+            insertText: 'controlador("${1:nome}"${2:, "deslizante"})',
+            range: range,
+            insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+        });
+        addCompletions(["exemplo_controlador"], {
+            kind: monaco.languages.CompletionItemKind.Function,
+            documentation: "A função gera um controlador que pode ser acessado no menu inferior direito.",
+            insertText:
+"${1:"+`/*
+controlador(nome, tipo, opcoes);
+
+nome - string nome do controlador
+tipo - string ("deslizante" || "numero" || "cor") tipo do controlador 
+opcoes -
+    minimo: numero minimo para controladores ("deslizante" || "numero"),
+    maximo: numero maximo para controladores ("deslizante" || "numero"),
+    passos: numero quantidade de numeros inseridos por vez para controladores ("deslizante" || "numero"),
+    valor: numero valor atual para controladores ("deslizante" || "numero")
+*/`+ '\n}controlador("${2:nome}", "${3:deslizante}", {\n\tminimo: ${4:-50},\n\tmaximo: ${5:50},\n\tpassos: ${6:1}${7:,\n\tvalor: 0\n}});',
             range: range,
             insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
         });

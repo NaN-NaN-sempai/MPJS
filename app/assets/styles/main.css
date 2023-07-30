@@ -243,6 +243,21 @@ body {
 .menu .window .innerWindow .content.hidden {
   display: none;
 }
+.menu .window .innerWindow .content .noControllers.hidden {
+  display: none;
+}
+.menu .window .innerWindow .content .noControllers .synthax {
+  -webkit-user-select: all;
+     -moz-user-select: all;
+          user-select: all;
+  border: 2px solid #e8d44d;
+  border-radius: 7px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+.menu .window .innerWindow .content .noControllers .synthax:hover {
+  background: #000000;
+}
 .menu .window .innerWindow .content hr {
   margin-top: 10px;
   margin-bottom: 10px;
@@ -255,6 +270,7 @@ body {
   cursor: pointer;
 }
 .menu .window .innerWindow .content input[type=range] {
+  width: 96%;
   -webkit-appearance: none;
      -moz-appearance: none;
           appearance: none;
