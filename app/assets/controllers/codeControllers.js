@@ -144,10 +144,10 @@ const codeController = (id, type = "range", options = {}) => {
                         if(["ping pong 2", "cos"].includes(options.automationType))
                             numberOutput.value = cos(parseFloat(number.value));
 
-                        }
+                    }
                         
-                        reloadPlotting();
-                    }, options.interval);
+                    reloadPlotting();
+                }, options.interval);
                     
             numberOutput.style.pointerEvents = 
             span.style.pointerEvents = "none";

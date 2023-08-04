@@ -17,6 +17,8 @@ const defaultInterval = generateInterval(-50, 50);
 
 const formatFix = n => n % 1 !== 0 ? n.toFixed(decimalAmount()) : n;
 
+const compareCord = (cord1, cord2) => (cord1.x == cord2.x) && (cord1.y == cord2.y);
+
 const setupGraphObjectHover = (el, options = {}) => {
     options = Object.assign({
         text: "Texto...",
@@ -79,7 +81,7 @@ const plotDot = (cord = cordDefault, options = {}) => {
 
         if(options.setupHover) {
             setupGraphObjectHover(dot, {
-                text: `Ponto ${options.name? `(<b>${options.name}</b>) `: ""}=> ${compareObjs(cord, cordDefault)? "Na Origem": `𝒙: ${formatFix(cord.x)}, 𝓎: ${formatFix(cord.y)}`}`,
+                text: `Ponto ${options.name? `(<b>${options.name}</b>) `: ""}=> ${compareCord(cord, cordDefault)? "Na Origem": `𝒙: ${formatFix(cord.x)}, 𝓎: ${formatFix(cord.y)}`}`,
                 color: options.color,
                 outline: options.outline,
                 textColor: getContrastHex(options.color, true)
@@ -123,7 +125,7 @@ const plotLine = (from = cordDefault, to = cordDefault, options = {})  => {
 
         if(options.setupHover){
             setupGraphObjectHover(line, {
-                text: `Linha ${options.name? `(<b>${options.name}</b>) `: ""}=> ${(compareObjs(from, cordDefault)? "Da Origem": `De 𝒙: ${formatFix(from.x)}, 𝓎: ${formatFix(from.y)}`)}<br>Para ${(compareObjs(to, cordDefault)? "a Origem": `𝒙: ${formatFix(to.x)}, 𝓎: ${formatFix(to.y)}`)}<br>Distancia: ${formatFix(distance)}`,
+                text: `Linha ${options.name? `(<b>${options.name}</b>) `: ""}=> ${(compareCord(from, cordDefault)? "Da Origem": `De 𝒙: ${formatFix(from.x)}, 𝓎: ${formatFix(from.y)}`)}<br>Para ${(compareCord(to, cordDefault)? "a Origem": `𝒙: ${formatFix(to.x)}, 𝓎: ${formatFix(to.y)}`)}<br>Distancia: ${formatFix(distance)}`,
                 color: options.color
             });
         }
@@ -147,9 +149,9 @@ const plotVector = (to = cordDefault, options = {})  => {
     
     var towards = {  x: options.position.x + to.x,   y: options.position.y + to.y  };
 
-    var notPointing = compareObjs(options.position, towards);
+    var notPointing = compareCord(options.position, towards);
 
-    var text = `Vetor ${options.name? `(<b>${options.name}</b>) `: ""}=> Direção 𝒙: ${to.x}, 𝓎: ${to.y}<br>${!compareObjs(options.position, cordDefault)? `Em 𝒙: ${formatFix(options.position.x)}, 𝓎: ${formatFix(options.position.y)}`: ""}${!notPointing? `<br>Apontando para 𝒙: ${formatFix(towards.x)}, 𝓎: ${formatFix(towards.y)}`: ""}${notPointing && compareObjs(options.position, cordDefault)? "Na Origem": ""}`;
+    var text = `Vetor ${options.name? `(<b>${options.name}</b>) `: ""}=> Direção 𝒙: ${to.x}, 𝓎: ${to.y}<br>${!compareCord(options.position, cordDefault)? `Em 𝒙: ${formatFix(options.position.x)}, 𝓎: ${formatFix(options.position.y)}`: ""}${!notPointing? `<br>Apontando para 𝒙: ${formatFix(towards.x)}, 𝓎: ${formatFix(towards.y)}`: ""}${notPointing && compareCord(options.position, cordDefault)? "Na Origem": ""}`;
     var setupHover = {
         text,
         color: options.color
@@ -223,7 +225,7 @@ const plotFunction = (func = () => cordDefault, options = {}) => {
         var pos = func(n);
 
         var setupHover = {
-            text: `Função ${options.name? `(<b>${options.name}</b>) `: ""}=> ${compareObjs(pos, cordDefault)? "Na Origem": `𝒙: ${formatFix(pos.x)}, 𝓎: ${formatFix(pos.y)}`}<br>Em (${formatFix(n)}) de [${formatFix(arr[0])} a ${formatFix(arr.at(-1))}]`,
+            text: `Função ${options.name? `(<b>${options.name}</b>) `: ""}=> ${compareCord(pos, cordDefault)? "Na Origem": `𝒙: ${formatFix(pos.x)}, 𝓎: ${formatFix(pos.y)}`}<br>Em (${formatFix(n)}) de [${formatFix(arr[0])} a ${formatFix(arr.at(-1))}]`,
             color: options.color,
             outline: options.outline,
             textColor
@@ -242,7 +244,7 @@ const plotFunction = (func = () => cordDefault, options = {}) => {
         var line = plotLine(pos, nextPos, {returnEl: true, setupHover: false, size: options.size, color: options.color});
         
         
-        setupHover.text = `Função ${options.name? `(<b>${options.name}</b>) `: ""}=> ${(compareObjs(pos, cordDefault)? "Da Origem": `De 𝒙: ${formatFix(pos.x)}, 𝓎: ${formatFix(pos.y)}`)}<br>Para ${(compareObjs(nextPos, cordDefault)? "a Origem": `𝒙: ${formatFix(nextPos.x)}, 𝓎: ${formatFix(nextPos.y)}`)}<br>Em (${formatFix(n)}) de [${formatFix(arr[0])} a ${formatFix(arr.at(-1))}]`;
+        setupHover.text = `Função ${options.name? `(<b>${options.name}</b>) `: ""}=> ${(compareCord(pos, cordDefault)? "Da Origem": `De 𝒙: ${formatFix(pos.x)}, 𝓎: ${formatFix(pos.y)}`)}<br>Para ${(compareCord(nextPos, cordDefault)? "a Origem": `𝒙: ${formatFix(nextPos.x)}, 𝓎: ${formatFix(nextPos.y)}`)}<br>Em (${formatFix(n)}) de [${formatFix(arr[0])} a ${formatFix(arr.at(-1))}]`;
 
         line.classList.add("functionLine");
         if(options.setupHover) setupGraphObjectHover(line, setupHover);
@@ -285,7 +287,7 @@ const plotConnection = (...params) => {
 
     cords.forEach((pos, i, arr) => {
         var setupHover = {
-            text: `Conexão ${options.name? `(<b>${options.name}</b>) `: ""}=> ${compareObjs(pos, cordDefault)? "Na Origem": `𝒙: ${formatFix(pos.x)}, 𝓎: ${formatFix(pos.y)}`}`,
+            text: `Conexão ${options.name? `(<b>${options.name}</b>) `: ""}=> ${compareCord(pos, cordDefault)? "Na Origem": `𝒙: ${formatFix(pos.x)}, 𝓎: ${formatFix(pos.y)}`}`,
             color: options.color,
             outline: options.outline,
             textColor
@@ -303,7 +305,7 @@ const plotConnection = (...params) => {
         var nextPos = arr[i+1];
         var line = plotLine(pos, nextPos, {returnEl: true, setupHover: false, size: options.size, color: options.color});
         
-        setupHover.text = `Conexão ${options.name? `(<b>${options.name}</b>) `: ""}=> ${(compareObjs(pos, cordDefault)? "Da Origem": `De 𝒙: ${formatFix(pos.x)}, 𝓎: ${formatFix(pos.y)}`)}<br>Para ${(compareObjs(nextPos, cordDefault)? "a Origem": `𝒙: ${formatFix(nextPos.x)}, 𝓎: ${formatFix(nextPos.y)}`)}`;
+        setupHover.text = `Conexão ${options.name? `(<b>${options.name}</b>) `: ""}=> ${(compareCord(pos, cordDefault)? "Da Origem": `De 𝒙: ${formatFix(pos.x)}, 𝓎: ${formatFix(pos.y)}`)}<br>Para ${(compareCord(nextPos, cordDefault)? "a Origem": `𝒙: ${formatFix(nextPos.x)}, 𝓎: ${formatFix(nextPos.y)}`)}`;
 
         line.classList.add("connectionLine");
         if(options.setupHover) setupGraphObjectHover(line, setupHover);
@@ -316,7 +318,98 @@ const plotConnection = (...params) => {
 
 const eraseGraph = () => [...document.querySelectorAll(".plotedObject")].forEach(e => e.remove());
 
+/* 
+console.clear();
 
+b = {c: {x:2,y: 6}}
+
+a={}
+Object.entries(window).filter(e=>e[1] != window).forEach(e=> a[e[0]] = e[1]);
+
+
+f = function(s) {
+    var search = (c) => Object.entries(c).find(ei => ei[1] == s);
+    var find = Object.entries(a).find(e => {
+        if(typeof e != "object") return false;
+
+        return search(e[1])
+    })
+    return (find? find[0]: null);
+};
+
+f(b)
+
+
+
+
+//pass thru all obj values
+console.clear()
+
+a={}
+Object.entries(window)
+    .filter(e=>!(e[1] == null || e[1] == undefined))
+    .forEach(e=> a[e[0]] = e[1]);
+
+t = (el) => {
+    var obj = {};
+    var workedObj = []
+    i = 0;
+    f = (ob, parent = "") => {
+        if(!ob) return ob;
+        
+        var isNullOrCircular = (obj) => {
+            try {
+                if(obj) !!Object.entries(obj).find(e => e[1] == obj);
+                else true;
+            } catch (err) {return true}
+        }
+    
+        Object.entries(ob).forEach(e => {
+            if(typeof e[1] == "object" && e[0] != "__parent"){
+                
+                if(!isNaN(e[0]) || isNullOrCircular(e[1]) || workedObj.includes(e[1])) return;
+    
+                try {
+                    eval(`obj${parent}.${e[0]} = {}`);
+                } catch (err) {}
+                
+                //eval(`obj${parent}.${e[0]}.__parent = obj${parent}`);
+                //eval(`obj${parent}.${e[0]}.__where = "${parent}.${e[0]}"`);
+                workedObj.push(e[1])
+                return f(e[1], parent +"."+e[0])
+                
+            } else {
+                try {
+                    
+                    if(typeof e[1] == "object"){
+                        eval(`obj${parent}.${e[0]} = ${JSON.stringify(e[1])}`)
+                    } else if(typeof e[1] == "function"){
+                        try {
+                            eval(`obj${parent}.${e[0]} = ${""+e[1]}`)
+                        } catch (err) {
+                            
+                            eval(`obj${parent}.${e[0]} = () => "native code"`)
+                        }
+                    } else if(typeof e[1] == "string"){     
+                        eval(`obj${parent}${isNaN(e[0]? `[${e[0]}]`: `.${e[0]}`)} = "${e[1]}"`)
+                    } else {
+                        
+                        eval(`obj${parent}.${e[0]} = ${e[1]}`)
+                    }
+                } catch (err){}
+                
+            }
+        
+            
+        });
+    }
+    f(el);
+    
+    return obj
+}
+
+g = t(a)
+*/
 
 
 
@@ -340,9 +433,9 @@ const ponto = function(posicao = {}, opcoes = {}) {
         plotar: true
     }, opcoes);
 
-    var dot = Object.assign(posicao, opcoes);
+    var thisvals = Object.assign(posicao, opcoes);
 
-    Object.entries(dot).forEach(e => {
+    Object.entries(thisvals).forEach(e => {
         this[e[0]] = e[1];
     });
 
@@ -378,9 +471,9 @@ const linha = function(de = {}, para = {}, opcoes = {}) {
         plotar: true
     }, opcoes);
 
-    var line = Object.assign({de, para}, opcoes);
+    var thisvals = Object.assign({de, para}, opcoes);
 
-    Object.entries(line).forEach(e => {
+    Object.entries(thisvals).forEach(e => {
         this[e[0]] = e[1];
     });
 
@@ -395,8 +488,103 @@ const linha = function(de = {}, para = {}, opcoes = {}) {
 const L = linha;
 
 
+const funcao_simples = function(calcular = (n)=>n, opcoes = {}) {
+    if (!(this instanceof funcao_simples)) return new funcao_simples(calcular, opcoes);
+
+    this.type = "simpleFunction";
+
+    opcoes = Object.assign({
+        calcular,
+        intervalo: defaultInterval,
+        tamanho: sizeDefault(),
+        cor: palette.mainColor,
+        borda: palette.mainColorContrast,
+        nome: null,
+        plotar: true
+    }, opcoes);
+
+    var thisvals = Object.assign({}, opcoes);
+
+    Object.entries(thisvals).forEach(e => {
+        this[e[0]] = e[1];
+    });
+
+    /* works only for variables */
+    this.instanceName = function() {
+        var find = Object.entries(window).find(e => e[1] == this);
+        return this.nome || (find? find[0]: null);
+    };
+
+    objectsToPlot.push(this);
+}
+const FS = funcao_simples;
+
+const funcao = function(calcular = (n)=> cordDefault, opcoes = {}) {
+    if (!(this instanceof funcao)) return new funcao(calcular, opcoes);
+
+    this.type = "function";
+
+    opcoes = Object.assign({
+        calcular,
+        intervalo: defaultInterval,
+        tamanho: sizeDefault(),
+        cor: palette.mainColor,
+        borda: palette.mainColorContrast,
+        nome: null,
+        plotar: true
+    }, opcoes);
+
+    var thisvals = Object.assign({}, opcoes);
+
+    Object.entries(thisvals).forEach(e => {
+        this[e[0]] = e[1];
+    });
+
+    /* works only for variables */
+    this.instanceName = function() {
+        var find = Object.entries(window).find(e => e[1] == this);
+        return this.nome || (find? find[0]: null);
+    };
+
+    objectsToPlot.push(this);
+}
+const F = funcao;
+
+const funcao_complexa = function(calcular = (n)=> cordDefault, opcoes = {}) {
+    if (!(this instanceof funcao_complexa)) return new funcao_complexa(calcular, opcoes);
+
+    this.type = "function";
+
+    opcoes = Object.assign({
+        calcular,
+        intervalo: defaultInterval,
+        tamanho: sizeDefault(),
+        cor: palette.mainColor,
+        borda: palette.mainColorContrast,
+        nome: "complex function - WIP",
+        plotar: true
+    }, opcoes);
+
+    var thisvals = Object.assign({}, opcoes);
+
+    Object.entries(thisvals).forEach(e => {
+        this[e[0]] = e[1];
+    });
+
+    /* works only for variables */
+    this.instanceName = function() {
+        var find = Object.entries(window).find(e => e[1] == this);
+        console.log(this.nome);
+        return this.nome || (find? find[0]: null);
+    };
+
+    objectsToPlot.push(this);
+}
+const FC = funcao_complexa;
+
+
 const plotObjects = () => {
-    eraseGraph();
+    eraseGraph();    
 
     objectsToPlot.forEach(obj => {
         if(!obj.plotar) return;
@@ -414,6 +602,22 @@ const plotObjects = () => {
                 name: obj.instanceName(),
                 size: obj.tamanho,
                 color: obj.cor
+            });
+
+        } else if(obj.type == "function"){
+            plotFunction(obj.calcular, {
+                name: obj.instanceName(),
+                size: obj.tamanho,
+                color: obj.cor,
+                outline: obj.borda
+            }); 
+
+        } else if(obj.type == "simpleFunction") {
+            plotFunction((n) => ({x: n, y: obj.calcular(n)}), {
+                name: obj.instanceName(),
+                size: obj.tamanho,
+                color: obj.cor,
+                outline: obj.borda
             });
         }
     });

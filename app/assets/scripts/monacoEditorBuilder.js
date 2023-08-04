@@ -83,7 +83,7 @@ require(["vs/editor/editor.main"], async () => {
         addCompletions(["controlador"], {
             kind: monaco.languages.CompletionItemKind.Function,
             documentation: "A função gera um controlador que pode ser acessado no menu inferior direito.",
-            insertText: 'controlador("${1:nome}"${2:, "deslizante"})',
+            insertText: 'controlador("${1:nome}", "${2:deslizante}")',
             range: range,
             insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
         });
@@ -124,9 +124,9 @@ opcoes para controlador tipo "automação" -
         });
 
         
-        addCompletions(["cordenada"], {
+        addCompletions(["coordenada"], {
             kind: monaco.languages.CompletionItemKind.Function,
-            documentation: "Gera um exemplo de cordenada",
+            documentation: "Gera um exemplo de coordenada",
             insertText: '{x: ${1:0}, y: ${2:0}}',
             range: range,
             insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
@@ -525,6 +525,8 @@ opcoes para controlador tipo "automação" -
 
     monaco.languages.typescript.javascriptDefaults.addExtraLib(``, 'filename/facts.d.ts');
     
+
+    /* create editor */
     var monacoEditor = window.monacoEditor = monaco.editor.create(monacoElement, {
         value: `//escreva "exemplo_ponto" e selecione a sugestão para plotar um ponto`,
         language: 'javascript',
