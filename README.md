@@ -1,3 +1,4 @@
+```javascript
 * -----> ao decorrer do projeto, pode acabar sendo descartado
 Ideia -> caso não tenha nada para mecher no projeto, posso considerar implementar
 
@@ -113,4 +114,4 @@ na aba de configuraçãos adicionar inputs que podem ser acessados no codigo
 ao inserir um valor nessese inputs, altomaticamente o plotador reiniciar
 os inputs podem ser de tipo slider, number, color, text e etc
 depende do decorrer do projeto (in progress)
-
+```
