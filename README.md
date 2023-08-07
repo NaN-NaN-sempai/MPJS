@@ -19,6 +19,10 @@ Ideia -> caso não tenha nada para mecher no projeto, posso considerar implement
 
 [PRIORIDADE - MEDIA]:
 
+* remover variaveis criadas durante a execução do codigo.
+checa Object.names(window) antes e depois de executar o codigo,
+os valores novos serão apagados.
+
 criar colorInput customizado
 input color personalizado
 
