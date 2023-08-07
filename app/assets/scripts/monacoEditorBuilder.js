@@ -272,7 +272,7 @@ opcoes para controlador tipo "automação" -
 
         addCompletions(["atan2", "arco tangente 2", "tangente inversa 2"], {
             kind: monaco.languages.CompletionItemKind.Function,
-            documentation: "A função arco tangente 2 retorna um valor numérico entre -π e π representando o ângulo teta entre (x, y). Assim indo no sentido anti-horario ao ângulo, medido em radianos, entre o eixo X positivo, e o ponto(x, y).Nota os argumentos para essa função: primeiro o eixo Y(ordenadas) e o eixo X(absissas) como segundo parâmetro.",
+            documentation: "A função arco tangente 2 retorna um valor numérico entre -π e π representando o ângulo teta entre (x, y). Assim indo no sentido anti-horario ao ângulo, medido em radianos, entre o eixo X positivo, e o ponto(x, y). Nota os argumentos para essa função: primeiro o eixo Y(ordenadas) e o eixo X(absissas) como segundo parâmetro.",
             insertText: 'atan2(${1:x}, ${2:y})',
             range: range,
             insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
