@@ -609,7 +609,8 @@ const plotObjects = () => {
                 name: obj.instanceName(),
                 size: obj.tamanho,
                 color: obj.cor,
-                outline: obj.borda
+                outline: obj.borda,
+                interval: obj.intervalo
             }); 
 
         } else if(obj.type == "simpleFunction") {
@@ -617,7 +618,8 @@ const plotObjects = () => {
                 name: obj.instanceName(),
                 size: obj.tamanho,
                 color: obj.cor,
-                outline: obj.borda
+                outline: obj.borda,
+                interval: obj.intervalo
             });
         }
     });
