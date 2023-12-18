@@ -13,7 +13,7 @@ if(doOnce) {
 
     const createParticles = (color, amount) => {
         for(let i in [...Array(amount).keys()]) {
-            let rx = r(-50, 50);
+            let rx = r(-100, 100);
             let ry = r(-50, 50);
                     
             window.pArr.push({
@@ -32,9 +32,11 @@ if(doOnce) {
         }
     }
 
-    createParticles(red, 20);
-    createParticles(blue, 20);
-    createParticles(green, 20);
+    let amt = 15;
+
+    createParticles(red, amt);
+    createParticles(blue, amt);
+    createParticles(green, amt);
 }
 
 const rule = (colorA, colorB, g) => {
@@ -56,27 +58,28 @@ const rule = (colorA, colorB, g) => {
                 fx += (f * dx);
                 fy += (f * dy);
             }
-                             
-            a.vel.x = (a.vel.x + fx) * .1;
-            a.vel.y = (a.vel.y + fy) * .1;
-
-            a.pos.x += a.vel.x;
-            a.pos.y += a.vel.y;
-
-            if(a.pos.x <= -99 || a.pos.x >= 99){ a.vel.x *= -1 }
-            if(a.pos.y <= -50 || a.pos.y >= 50){ a.vel.y *= -1 }
         }
+                             
+        a.vel.x = (a.vel.x + fx) * .5;
+        a.vel.y = (a.vel.y + fy) * .5;
+
+        a.pos.x += a.vel.x;
+        a.pos.y += a.vel.y;
+
+        if(a.pos.x <= -99 || a.pos.x >= 99){ a.vel.x *= -1 }
+        if(a.pos.y <= -50 || a.pos.y >= 50){ a.vel.y *= -1 }
     }     
 
 }
 
 rule(red, blue, -1);
-rule(blue, green, -.5);
-rule(green, red, -.25);
+rule(blue, green, -1);
+rule(green, red, -1);
 
-rule(red, blue, 1);
-rule(blue, green, .5);
-rule(green, red, .25);
+rule(red, red, 1);
+rule(blue, green, -1); 
+
+rule(green, green, 10)
 
 
 pArr.forEach(p => {
@@ -91,5 +94,5 @@ if(window.timeoutDoOnce == undefined){
     setTimeout(() => {
     window.timeoutDoOnce = undefined;
         reloadPlotting();
-    }, 100)
+    }, 10)
 }
