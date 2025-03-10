@@ -7,6 +7,8 @@ Ideia -> caso não tenha nada para mecher no projeto, posso considerar implement
 
 [PRIORIDADE - ALTA]:
 
+concertar loops que ficam sendo criados enquanto escreve o codigo mudando o nome e erro ao mudar o timing do loop
+
 * mover e zoom no grafico
 
 * transformar barras dos eixos x e y do plano cartesianos em objetos moviveis
@@ -39,6 +41,10 @@ funcao_simples ---------------- NÃO
 exemplo_funcao_simples -------- NÃO
 funcao_complexa --------------- AINDA NÃO IMPLEMENTADO
 exemplo_funcao_complexa ------- AINDA NÃO IMPLEMENTADO
+loop -------------------------- NÃO
+exemplo_loop ------------------ NÃO
+interacao --------------------- NÃO - AINDA EM INGLÊS
+exemplo_interacao ------------- NÃO
 controlador ------------------- feito
 exemplo_controlador ----------- feito
 exemplo_controlador_automação - feito
