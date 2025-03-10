@@ -524,11 +524,13 @@ opcoes para controlador tipo "automação" -
 
 
     monaco.languages.typescript.javascriptDefaults.addExtraLib(``, 'filename/facts.d.ts');
-    
+
+    let preText = `//escreva "exemplo_ponto" e selecione a sugestão para plotar um ponto`;
+    if(localStorage.getItem("MPJS_Eval")) preText = localStorage.getItem("MPJS_Eval");
 
     /* create editor */
     var monacoEditor = window.monacoEditor = monaco.editor.create(monacoElement, {
-        value: `//escreva "exemplo_ponto" e selecione a sugestão para plotar um ponto`,
+        value: preText,
         language: 'javascript',
         theme: 'my-dark',
         lineNumbersMinChars: 2,

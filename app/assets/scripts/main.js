@@ -1,6 +1,6 @@
 const plane = document.querySelector(".planeContainer"),
-      graphObjectHover = document.querySelector(".graphObjectHover"),
-      decimalAmount = () => document.getElementById("decimalPlaces").value;
+graphObjectHover = document.querySelector(".graphObjectHover"),
+decimalAmount = () => document.getElementById("decimalPlaces").value;
 
 const cordDefault = {x: 0, y:0};
 const sizeDefault = () => parseInt(document.getElementById("sizeDefault").value);
@@ -318,6 +318,42 @@ const plotConnection = (...params) => {
 
 const eraseGraph = () => [...document.querySelectorAll(".plotedObject")].forEach(e => e.remove());
 
+/* INTERACTION POSITION */
+let interactionPos = Object.assign({}, cordDefault);
+
+const updateObjPos = (obj, pos) => {
+    Object.assign(obj, pos);
+}
+
+const updateInteractionPos = (e) => {
+    let eventCord = Object.assign({}, cordDefault);
+
+    // Uses position based on .planeContainer
+    const setupPos = (e) => {
+        const planeContainer = document.querySelector(".planeContainer");
+        const rect = planeContainer.getBoundingClientRect();
+        let posInX = e.clientX - rect.left;
+        let posInY = e.clientY - rect.top;
+
+        return {
+            x: ((posInX / rect.width) * 100) - 50,
+            y: -(((posInY / rect.height) * 100) - 50)
+        }
+    }
+
+    if (e.touches) { // Mobile (touch)
+        eventCord = setupPos(e.touches[0]);
+    } else { // PC (mouse)
+        eventCord = setupPos(e);
+    }
+
+    updateObjPos(interactionPos, eventCord);
+    if(useInteraction) reloadPlotting();
+};
+  
+window.addEventListener('mousemove', updateInteractionPos);
+window.addEventListener('touchmove', updateInteractionPos);
+
 /* 
 console.clear();
 
@@ -633,7 +669,7 @@ const windowScopeEval = (...params) => eval(...params);
 
 
 
-/* setup math */
+/* SETUP MATH ON ROOT SCOPE */
 Object.getOwnPropertyNames(Math).forEach(e => {
     Object.defineProperty(window,
         e,
@@ -645,13 +681,63 @@ Object.getOwnPropertyNames(Math).forEach(e => {
         });
 });
 
+let loopCallbacks = [];
+const execLoop = () => {
+    loopCallbacks.forEach(e => {
+        if(!e.state) return;
+        e.interval = e.interval != null? 
+        e.interval:
+        setInterval(() => {
+            objectsToPlot.length = 0;
+            e.callback();
+            plotObjects();
+        }, e.timing);
+    });
+}
 
+const loop = (name, callback, timing) => {
+    let exists = loopCallbacks.find(e => e.name == name);
+
+    if(!exists) loopCallbacks.push({
+        name,
+        state: true,
+        callback,
+        timing: timing!==undefined? timing: 1000
+    });
+    else {
+        exists.callback = callback;
+
+        if(timing != null) {
+            if(exists.timing == timing) return;
+
+            exists.timing = timing;
+
+            clearInterval(exists.interval);
+            exists.interval = setInterval(() => {
+                objectsToPlot.length = 0;
+                e.callback();
+                plotObjects();
+            }, timing);
+        }
+    }
+}
+
+let loopInterval = setInterval(() => {
+    execLoop();
+}, 1000);
+
+
+let useInteraction = false;
 
 var lastWorkingCode = "";
 const onCodeInputFunction = (evalString) => {
+    useInteraction = evalString.includes("Usar Interação");
     graphObjectHover.style.display ="none";
     objectsToPlot.length = 0;
     codeControllersIds.length = 0;
+
+
+    localStorage.setItem("MPJS_Eval", evalString);
     
     var worked;
     try {
@@ -673,6 +759,7 @@ const onCodeInputFunction = (evalString) => {
 }
 
 const reloadPlotting = () => {
+    localStorage.setItem("MPJS_Eval", localStorage.getItem("MPJS_Eval"));
     onCodeInputFunction(lastWorkingCode);
 }
 
@@ -714,9 +801,6 @@ var b = arr.filter(e => (e.x ** 2) + (e.y ** 2) == 1);
 b;
 
 */
-
-
-
 
 
 
